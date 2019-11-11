@@ -1,0 +1,9 @@
+syntax = "proto3";
+package proto;
+import "Sala.proto";
+option java_package = "sd.ufc.reserva.model";
+option java_outer_classname = "ObjectListaSala";
+
+message ListaSala{
+    repeated Sala list =1;
+}

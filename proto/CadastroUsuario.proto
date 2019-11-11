@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package proto;
+option java_package = "sd.ufc.reserva.model";
+option java_outer_classname = "ObjectCadastroUsuario";
+
+message CadastroUsuario{
+    string nome = 1; 
+    string usuario = 2;
+    string senha = 3;
+    string cpf = 4;
+    string matricula = 5;
+    string curso = 6;
+}

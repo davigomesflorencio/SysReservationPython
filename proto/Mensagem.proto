@@ -1,0 +1,12 @@
+syntax = "proto3";
+package proto;
+option java_package = "sd.ufc.reserva.model";
+option java_outer_classname = "ObjectMensagem";
+
+message Mensagem{
+    int32 messageType = 1;
+    int32 request_id = 2;
+    string object_reference = 3; 
+    string method = 4; 
+    bytes arguments = 5;
+}

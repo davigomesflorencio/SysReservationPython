@@ -1,0 +1,9 @@
+syntax = "proto3";
+package model;
+option java_package = "sd.ufc.reserva.model";
+option java_outer_classname = "ObjectAuthUsuario";
+
+message AuthUsuario{
+    string usuario= 1;
+    string senha = 2;
+}

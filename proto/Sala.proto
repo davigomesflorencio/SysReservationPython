@@ -1,0 +1,11 @@
+syntax = "proto3";
+
+package proto;
+option java_package = "sd.ufc.reserva.model";
+option java_outer_classname = "ObjectSala";
+
+message Sala{
+    int32 id_sala = 1;
+    string nome = 2;
+    string bloco = 3;
+}
