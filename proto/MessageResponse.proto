@@ -1,8 +1,8 @@
 syntax = "proto3";
 package proto;
 option java_package = "sd.ufc.reserva.model";
-option java_outer_classname = "ObjectMessageCallback";
+option java_outer_classname = "ObjectMessageResponse";
 
-message MessageCallback{
+message MessageResponse{
     string mensagem = 1; 
 }

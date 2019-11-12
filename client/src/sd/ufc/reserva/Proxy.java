@@ -13,7 +13,7 @@ import sd.ufc.reserva.model.ObjectIdentificacao.Identificacao;
 import sd.ufc.reserva.model.ObjectListaReserva.ListaReserva;
 import sd.ufc.reserva.model.ObjectListaSala.ListaSala;
 import sd.ufc.reserva.model.ObjectMensagem.Mensagem;
-import sd.ufc.reserva.model.ObjectMessageCallback.MessageCallback;
+import sd.ufc.reserva.model.ObjectMessageResponse.MessageRensponse;
 import sd.ufc.reserva.model.ObjectReserva.Reserva;
 
 public class Proxy {
@@ -116,9 +116,9 @@ public class Proxy {
 
 		Mensagem aux = doOperation("ReferenceReserva", "Metodo_adicionar_pedido_reserva", args);
 
-		MessageCallback msgcallback = null;
+		MessageRensponse msgcallback = null;
 		try {
-			msgcallback = MessageCallback
+			msgcallback = MessageRensponse
 					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -141,9 +141,9 @@ public class Proxy {
 
 		Mensagem aux = doOperation("ReferenceReserva", "Metodo_cancelar_pedido_reserva", args);
 
-		MessageCallback msgcallback = null;
+		MessageRensponse msgcallback = null;
 		try {
-			msgcallback = MessageCallback
+			msgcallback = MessageRensponse
 					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -166,9 +166,9 @@ public class Proxy {
 
 		Mensagem aux = doOperation("ReferenceReserva", "Metodo_ver_pedido_reserva", args);
 
-		MessageCallback msgcallback = null;
+		MessageRensponse msgcallback = null;
 		try {
-			msgcallback = MessageCallback
+			msgcallback = MessageRensponse
 					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 		} catch (IOException e) {
 			e.printStackTrace();

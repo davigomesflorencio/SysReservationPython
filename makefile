@@ -13,16 +13,16 @@ LISTA_RESERVA :=./proto/ListaReserva.proto
 AUTH_USUARIO	:=./proto/AuthUsuario.proto
 CADASTRO_USUARIO :=./proto/CadastroUsuario.proto
 IDENTIFICACAO :=./proto/Identificacao.proto
-MESSAGE_CALLBACK :=./proto/MessageCallback.proto
+MESSAGE_RESPONSE :=./proto/MessageResponse.proto
 
 PYTHON_OUT  :=./server/model
 JAVA_OUT    :=./client/src
 
 all: java py
 
-java:usuario_java message_callback_java msg_java sala_java reserva_java lista_reserva_java lista_sala_java cadastro_usuario_java identificacao_java
+java:usuario_java message_response_java msg_java sala_java reserva_java lista_reserva_java lista_sala_java cadastro_usuario_java identificacao_java
 
-py:usuario_py message_callback_py msg_py sala_py reserva_py lista_reserva_py lista_sala_py cadastro_usuario_py identificacao_py
+py:usuario_py message_response_py msg_py sala_py reserva_py lista_reserva_py lista_sala_py cadastro_usuario_py identificacao_py
 
 # JAVA
 msg_java:
@@ -41,8 +41,8 @@ cadastro_usuario_java:
 	$(CC) $(CADASTRO_USUARIO) --java_out=$(JAVA_OUT)
 identificacao_java:
 	$(CC) $(IDENTIFICACAO) --java_out=$(JAVA_OUT)
-message_callback_java:
-	$(CC) $(MESSAGE_CALLBACK) --java_out=$(JAVA_OUT)
+message_response_java:
+	$(CC) $(MESSAGE_RESPONSE) --java_out=$(JAVA_OUT)
 
 # PYTHON
 msg_py:
@@ -61,8 +61,8 @@ cadastro_usuario_py:
 	$(CC) --proto_path=$(PROTO) $(CADASTRO_USUARIO) --python_out=$(PYTHON_OUT)
 identificacao_py:
 	$(CC) --proto_path=$(PROTO) $(IDENTIFICACAO) --python_out=$(PYTHON_OUT)
-message_callback_py:
-	$(CC) --proto_path=$(PROTO) $(MESSAGE_CALLBACK) --python_out=$(PYTHON_OUT)
+message_response_py:
+	$(CC) --proto_path=$(PROTO) $(MESSAGE_RESPONSE) --python_out=$(PYTHON_OUT)
 
 clean:
 	rm -R ./server/model
