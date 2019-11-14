@@ -39,9 +39,10 @@ def main():
         
         print("Tipo",mensagem.messageType)
         print("request id",mensagem.request_id)
-        print("object reference",mensagem.object_reference)
+        print("object reference", mensagem.object_reference)
         print("Metodo",mensagem.method)
-        # print("Args", (mensagem.arguments).decode(encoding="utf-8"))
+
+        #print("Args", (mensagem.arguments).decode(encoding="utf-8"))
         
         des =Despachante
         sendReply(mensagem,des.invoke(mensagem),cliente)

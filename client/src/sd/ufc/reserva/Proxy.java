@@ -3,6 +3,7 @@ package sd.ufc.reserva;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.net.SocketTimeoutException;
 
 import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
@@ -17,7 +18,7 @@ import sd.ufc.reserva.model.ObjectMessageResponse.MessageRensponse;
 import sd.ufc.reserva.model.ObjectReserva.Reserva;
 
 public class Proxy {
-
+	
 	UDPClient udpclient;
 	private int id_usuario = -1;
 	private static int id_request = 0;
@@ -213,8 +214,14 @@ public class Proxy {
 
 		udpclient.sendRequest(data);
 
-		Mensagem resposta = desempacotaMensagem(udpclient.getReplay());
-
+		Mensagem resposta = null;
+		for (int i = 0; i < 3; i++) {
+			try {
+				resposta = desempacotaMensagem(udpclient.getReplay());
+			} catch (SocketTimeoutException e) {
+				udpclient.sendRequest(data);
+			}
+		}
 		id_request += 1;
 		return resposta;
 

@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 public class UDPClient {
@@ -39,14 +40,18 @@ public class UDPClient {
 		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
 		
 		try {
+			
 			socket.send(sendPacket);
+			socket.setSoTimeout(3000);
+	
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public byte[] getReplay() {
+	public byte[] getReplay() throws SocketTimeoutException{
+		
 		byte[] receiveData = new byte[1024];
 		DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 		try {
