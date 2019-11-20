@@ -30,22 +30,90 @@ public class Cliente {
 
 		switch (operacao) {
 		case 1:
-			System.out.println(proxy.ListarSalas());
+			proxy.ListarSalas();
 			break;
 
 		case 2:
-			System.out.println(proxy.Logar("davi", "1223"));
+			System.out.println("Digite Seu Usuário: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String usuarioLogin=opt;
+			
+			System.out.println("Digite Sua Senha: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String senhaLogin=opt;
+			
+			System.out.println(proxy.Logar(usuarioLogin, senhaLogin));
 			break;
 
 		case 3:
-			System.out.println(proxy.RealizarPedidoReserva("1", "data", "horario"));
+			System.out.println("Digite a Sala Desejada: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String idSala=opt;
+			
+			System.out.println("Digite a Data: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String data=opt;
+			
+			System.out.println("Digite o Horario: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String horario=opt;
+			System.out.println(proxy.RealizarPedidoReserva(idSala, data, horario));
 			break;
 
 		case 4:
-			System.out.println(proxy.CancelarPedidoReserva("5"));
+			System.out.println("Digite o id do pedido: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String pedC=opt;
+			
+			System.out.println(proxy.CancelarPedidoReserva(pedC));
 			break;
 		case 5:
-			System.out.println(proxy.VerPedidoReserva("3"));
+			System.out.println("Digite o id do pedido: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String pedCR=opt;
+			System.out.println(proxy.VerPedidoReserva(pedCR));
 			break;
 
 		case 6:

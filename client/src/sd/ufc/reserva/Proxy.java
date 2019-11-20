@@ -9,12 +9,13 @@ import com.google.protobuf.ByteString;
 import com.google.protobuf.InvalidProtocolBufferException;
 
 import sd.ufc.reserva.model.ObjectAuthUsuario.AuthUsuario;
+import sd.ufc.reserva.model.ObjectCadastroUsuario.CadastroUsuario;
 import sd.ufc.reserva.model.ObjectIdentificacao;
 import sd.ufc.reserva.model.ObjectIdentificacao.Identificacao;
 import sd.ufc.reserva.model.ObjectListaReserva.ListaReserva;
 import sd.ufc.reserva.model.ObjectListaSala.ListaSala;
 import sd.ufc.reserva.model.ObjectMensagem.Mensagem;
-import sd.ufc.reserva.model.ObjectMessageResponse.MessageRensponse;
+import sd.ufc.reserva.model.ObjectMessageResponse.MessageResponse;
 import sd.ufc.reserva.model.ObjectReserva.Reserva;
 
 public class Proxy {
@@ -27,9 +28,11 @@ public class Proxy {
 		udpclient = new UDPClient("localhost", 20001);
 	}
 
-	public String ListarSalas() {
+	public void ListarSalas() {
+		
 		byte[] args = new byte[1024];
-		args = new String("").getBytes();
+		args = EmpacotaArg();
+		
 		Mensagem aux = doOperation("ReferenceSala", "Metodo_listar_salas", args);
 
 		ListaSala listsala = null;
@@ -39,12 +42,54 @@ public class Proxy {
 			e.printStackTrace();
 		}
 
-		return listsala.toString();
+		int t = listsala.getListCount();
+		for (int i = 0; i < t; i++) {
+			System.out.println("ID: "+listsala.getList(i).getIdSala()+" Nome: "+listsala.getList(i).getNome());								
+		}
 	}
+	
+	private byte[] EmpacotaArg() {
+		byte[] args = new byte[1024];
+		args = new String("").getBytes();
+		
+		return args;
+	}
+	
+//	public String CadastrarUsuario(String nome, String usuario, String senha, String cpf, String matricula, String curso) {//cad proto
+//		byte[] args = new byte[1024];
+//		args = empacotaCadastro(nome,usuario,senha,cpf,matricula,curso);
+//		
+//		Mensagem aux = doOperation("ReferenceUsuario", "Metodo_cadastro_usuario", args);
+//
+//		MessageResponse msgResposta = null;
+//		
+//		try {
+//			msgResposta = MessageResponse.parseFrom(aux.getArguments());
+//		} catch (InvalidProtocolBufferException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}				
+//		
+//		return msgResposta.getMensagem();//string
+//	}
+//	
+//	private byte[] empacotaCadastro(String nome, String usuario, String senha, String cpf, String matricula, String curso) {
+//		CadastroUsuario cad = CadastroUsuario.newBuilder().setNome(nome).setUsuario(usuario).setSenha(senha).setCpf(cpf).setMatricula(matricula).setCurso(curso).build();
+//		
+//		ByteArrayOutputStream cad_em_bytes = new ByteArrayOutputStream(1024);
+//		try {
+//			cad.writeDelimitedTo(cad_em_bytes);
+//		} catch (IOException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+//		return cad_em_bytes.toByteArray();
+//	}
 
 	public String ListarReservas() {
 		byte[] args = new byte[1024];
-		args = new String("").getBytes();
+		args = EmpacotaArg();
 
 		ObjectIdentificacao.Identificacao iden;
 		iden = ObjectIdentificacao.Identificacao.newBuilder().setId(id_usuario).build();
@@ -71,10 +116,12 @@ public class Proxy {
 
 		return listreserva.toString();
 	}
+	
+	
 
 	public String ListarPedidosReservas() {
 		byte[] args = new byte[1024];
-		args = new String("").getBytes();
+		args = EmpacotaArg();
 
 		Identificacao iden;
 		iden = Identificacao.newBuilder().setId(id_usuario).build();
@@ -103,31 +150,57 @@ public class Proxy {
 	}
 
 	public String RealizarPedidoReserva(String id_sala, String data, String horario) {
-		Reserva res = Reserva.newBuilder().setId(0).setIdUsuario(id_usuario).setIdSala(Integer.parseInt(id_sala))
-				.setData(data).setHorario("A").build();
-
+		
 		byte[] args = new byte[1024];
-		ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
-		try {
-			res.writeDelimitedTo(mensagem_em_bytes);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		args = mensagem_em_bytes.toByteArray();
+		args = EmpacotaPedReserva(id_sala,data,horario);
 
 		Mensagem aux = doOperation("ReferenceReserva", "Metodo_adicionar_pedido_reserva", args);
 
-		MessageRensponse msgcallback = null;
+		MessageResponse msgcallback = null;
 		try {
-			msgcallback = MessageRensponse
+			msgcallback = MessageResponse
 					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		return msgcallback.getMensagem();
 	}
+	
+	private byte[] EmpacotaPedReserva(String id_sala, String data, String horario) {
+		Reserva res = Reserva.newBuilder().setId(0).setIdUsuario(id_usuario).setIdSala(Integer.parseInt(id_sala))
+				.setData(data).setHorario("A").build();
+
+		byte[] args = new byte[1024];
+		
+		ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
+		try {
+			res.writeDelimitedTo(mensagem_em_bytes);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		
+		args = mensagem_em_bytes.toByteArray();
+		
+		return args;
+	}
 
 	public String CancelarPedidoReserva(String id) {
+		byte[] args = new byte[1024];
+		args = EmpacotaCancelReserva(id);
+
+		Mensagem aux = doOperation("ReferenceReserva", "Metodo_cancelar_pedido_reserva", args);
+
+		MessageResponse msgcallback = null;
+		try {
+			msgcallback = MessageResponse
+					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return msgcallback.getMensagem();
+	}
+	
+	private byte[] EmpacotaCancelReserva(String id) {
 		Reserva res = Reserva.newBuilder().setId(Integer.parseInt(id)).setIdUsuario(id_usuario).setIdSala(0).setData("")
 				.setHorario("").build();
 
@@ -139,17 +212,8 @@ public class Proxy {
 			e1.printStackTrace();
 		}
 		args = mensagem_em_bytes.toByteArray();
-
-		Mensagem aux = doOperation("ReferenceReserva", "Metodo_cancelar_pedido_reserva", args);
-
-		MessageRensponse msgcallback = null;
-		try {
-			msgcallback = MessageRensponse
-					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return msgcallback.getMensagem();
+		
+		return args;
 	}
 
 	public String VerPedidoReserva(String id) {
@@ -167,9 +231,9 @@ public class Proxy {
 
 		Mensagem aux = doOperation("ReferenceReserva", "Metodo_ver_pedido_reserva", args);
 
-		MessageRensponse msgcallback = null;
+		MessageResponse msgcallback = null;
 		try {
-			msgcallback = MessageRensponse
+			msgcallback = MessageResponse
 					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -178,15 +242,10 @@ public class Proxy {
 	}
 
 	public String Logar(String usuario, String senha) {
-		AuthUsuario auth = AuthUsuario.newBuilder().setUsuario(usuario).setSenha(senha).build();
+		
 		byte[] args = new byte[1024];
-		ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
-		try {
-			auth.writeDelimitedTo(mensagem_em_bytes);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		args = mensagem_em_bytes.toByteArray();
+		args =EmpacotaLogin(usuario, senha);
+		
 		Mensagem aux = doOperation("ReferenceAuth", "Metodo_autenticar", args);
 
 		try {
@@ -200,7 +259,20 @@ public class Proxy {
 		if (id_usuario > 0) {
 			return "Login realizado com sucesso";
 		}
-		return "NÃ£o foi possivel realizar o login: Usuario ou senha incorretos";
+		return "Não foi possivel realizar o login: Usuario ou senha incorretos";
+	}
+	
+	private byte[] EmpacotaLogin(String usuario, String senha) {
+		AuthUsuario auth = AuthUsuario.newBuilder().setUsuario(usuario).setSenha(senha).build();
+		byte[] args = new byte[1024];
+		ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
+		try {
+			auth.writeDelimitedTo(mensagem_em_bytes);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		args = mensagem_em_bytes.toByteArray();
+		return args;
 	}
 
 	public String Deslogar() {
@@ -212,16 +284,20 @@ public class Proxy {
 
 		byte[] data = empacotaMensagem(objectRef, method, args);
 
+		
 		udpclient.sendRequest(data);
-
+		
+		boolean estouro = true;
+		
 		Mensagem resposta = null;
-		for (int i = 0; i < 3; i++) {
-			try {
-				resposta = desempacotaMensagem(udpclient.getReplay());
-			} catch (SocketTimeoutException e) {
-				udpclient.sendRequest(data);
-			}
-		}
+//		for (int i = 0; i < 3; i++) {
+//			if(estouro) {
+//				estouro = false;				
+					byte[] m = udpclient.getReplay();
+					resposta = desempacotaMensagem(m);							
+//			}			
+//		}
+		
 		id_request += 1;
 		return resposta;
 
