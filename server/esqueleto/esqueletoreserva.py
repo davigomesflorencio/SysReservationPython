@@ -1,7 +1,7 @@
 from services.ServiceReserva import ServiceReserva
 from model.Identificacao_pb2 import Identificacao
 from model.Reserva_pb2 import Reserva
-from model.MessageCallback_pb2 import MessageCallback
+from model.MessageResponse_pb2 import MessageResponse
 from google.protobuf.internal import encoder
 from google.protobuf.internal import decoder
 
@@ -28,7 +28,7 @@ class EsqueletoReserva:
 
     def adicionar_pedido_reserva(self,args):
         reserva = self.desempacotaReserva(args)
-        msgcallback = MessageCallback()
+        msgcallback = MessageResponse()
         if(ServiceReserva().AdicionarPedidoReserva(reserva)):
             msgcallback.mensagem = "Pedido adicionado"
         else:
@@ -38,17 +38,16 @@ class EsqueletoReserva:
     def ver_pedido_reserva(self,args):
         reserva = self.desempacotaReserva(args)
         req = ServiceReserva().VerPedidoReserva(reserva)
-        msgcallback = MessageCallback()
-        if(req==()):
+        msgcallback = MessageResponse()
+        if(req==None):
             msgcallback.mensagem = "Reserva não encontrada"
-            return self.empacotaMessageCallback(msgcallback)
         msgcallback.mensagem = "Reserva: id "+str(req.id)+", id da sala "+str(req.id_sala)+", data "+req.data+", horario "+horario
         return self.empacota(msgcallback)
     
     def cancelar_pedido_reserva(self,args):
         reserva = self.desempacotaReserva(args)
         req = ServiceReserva().CancelarPedidoReserva(reserva)
-        msgcallback = MessageCallback()
+        msgcallback = MessageResponse()
         if(req==True):
             msgcallback.mensagem = "Pedido de reserva cancelado: id "+str(reserva.id)
         else:
