@@ -45,8 +45,8 @@ public class UDPClient {
 		
 		try {
 			socket.send(sendPacket);
+			socket.setSoTimeout(2000);
 		} catch (IOException e) {
-			System.out.println("entou");
 			// TODO Auto-generated catch block
 			e.printStackTrace();				
 		}
@@ -55,24 +55,17 @@ public class UDPClient {
 				
 	}
 
-	public byte[] getReplay() {
+	public byte[] getReplay() throws Exception{
 		
 		byte[] receiveData = new byte[1024];
-		DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);		
-			
+		DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
 			try {
-				socket.receive(receivePacket);
-				
-			} catch (SocketTimeoutException e1) {
-				// TODO Auto-generated catch block
-				System.out.println("estouro");
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
+				socket.receive(receivePacket);				
+			}catch(SocketTimeoutException e) {
+				throw new Exception("SocketTimeoutException");
+			}catch (IOException e) {
+				e.printStackTrace();
 			}						
-			
-			
 			
 			return receiveData;
 		

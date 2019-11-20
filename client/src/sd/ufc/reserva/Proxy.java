@@ -40,13 +40,98 @@ public class Proxy {
 			listsala = ListaSala.parseFrom(aux.getArguments());
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
+		} catch(java.lang.NullPointerException e) {
+			System.out.println("Servidor não respondeu!");
+		}
+		
+		
+		if(listsala!=null) {
+			int t = listsala.getListCount();
+			for (int i = 0; i < t; i++) {
+				System.out.println("ID: "+listsala.getList(i).getIdSala()+" Nome: "+listsala.getList(i).getNome());								
+			}
+		}
+		
+	}
+	
+	public void ListarReservas() {
+		byte[] args = new byte[1024];
+		args = EmpacotaArg();
+
+		ObjectIdentificacao.Identificacao iden;
+		iden = ObjectIdentificacao.Identificacao.newBuilder().setId(id_usuario).build();
+
+		ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
+
+		try {
+			iden.writeDelimitedTo(mensagem_em_bytes);
+		} catch (IOException e1) {
+			e1.printStackTrace();
 		}
 
-		int t = listsala.getListCount();
-		for (int i = 0; i < t; i++) {
-			System.out.println("ID: "+listsala.getList(i).getIdSala()+" Nome: "+listsala.getList(i).getNome());								
+		args = mensagem_em_bytes.toByteArray();
+
+		Mensagem aux = doOperation("ReferenceReserva", "Metodo_listar_reservas", args);
+
+		ListaReserva listreserva = null;
+
+		try {
+			listreserva = ListaReserva.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+		} catch(java.lang.NullPointerException e) {
+			System.out.println("Servidor não respondeu!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+
+		if(listreserva!=null) {
+			int t = listreserva.getReservasCount();
+			for (int i = 0; i < t; i++) {
+				System.out.println("Sala : "+listreserva.getReservas(i).getIdSala()+" Horario: "+listreserva.getReservas(i).getHorario()+" Data: "+listreserva.getReservas(i).getData());								
+			}
 		}
 	}
+	
+	public void ListarPedidosReservas() {
+		byte[] args = new byte[1024];
+		args = EmpacotaArg();
+
+		Identificacao iden;
+		iden = Identificacao.newBuilder().setId(id_usuario).build();
+
+		ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
+
+		try {
+			iden.writeDelimitedTo(mensagem_em_bytes);
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		}
+
+		args = mensagem_em_bytes.toByteArray();
+
+		Mensagem aux = doOperation("ReferenceReserva", "Metodo_listar_pedido_reservas", args);
+
+		ListaReserva listreserva = null;
+
+		try {
+			listreserva = ListaReserva.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+		} catch(java.lang.NullPointerException e) {
+			System.out.println("Servidor não respondeu!");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		
+		if(listreserva!=null) {
+			int t = listreserva.getReservasCount();
+			for (int i = 0; i < t; i++) {
+				System.out.println("Sala : "+listreserva.getReservas(i).getIdSala()+" Horario: "+listreserva.getReservas(i).getHorario()+" Data: "+listreserva.getReservas(i).getData());								
+			}
+		}
+		
+	}
+	
+	
 	
 	private byte[] EmpacotaArg() {
 		byte[] args = new byte[1024];
@@ -87,67 +172,8 @@ public class Proxy {
 		return cad_em_bytes.toByteArray();
 	}
 
-	public String ListarReservas() {
-		byte[] args = new byte[1024];
-		args = EmpacotaArg();
 
-		ObjectIdentificacao.Identificacao iden;
-		iden = ObjectIdentificacao.Identificacao.newBuilder().setId(id_usuario).build();
-
-		ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
-
-		try {
-			iden.writeDelimitedTo(mensagem_em_bytes);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		args = mensagem_em_bytes.toByteArray();
-
-		Mensagem aux = doOperation("ReferenceReserva", "Metodo_listar_reservas", args);
-
-		ListaReserva listreserva = null;
-
-		try {
-			listreserva = ListaReserva.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return listreserva.toString();
-	}
 	
-	
-
-	public String ListarPedidosReservas() {
-		byte[] args = new byte[1024];
-		args = EmpacotaArg();
-
-		Identificacao iden;
-		iden = Identificacao.newBuilder().setId(id_usuario).build();
-
-		ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
-
-		try {
-			iden.writeDelimitedTo(mensagem_em_bytes);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-
-		args = mensagem_em_bytes.toByteArray();
-
-		Mensagem aux = doOperation("ReferenceReserva", "Metodo_listar_pedido_reservas", args);
-
-		ListaReserva listreserva = null;
-
-		try {
-			listreserva = ListaReserva.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-
-		return listreserva.toString();
-	}
 
 	public String RealizarPedidoReserva(String id_sala, String data, String horario) {
 		
@@ -194,10 +220,53 @@ public class Proxy {
 		try {
 			msgcallback = MessageResponse
 					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+		} catch (java.lang.NullPointerException e) {
+			System.out.println("Servidor Não Respondeu!");
+			
+		}catch (IOException e) {
+			
+			e.printStackTrace();
+		}
+		
+		if(msgcallback!=null) {
+			return msgcallback.getMensagem();
+		}else {
+			return "";
+		}
+		
+		
+	}
+	
+	public String VerPedidoReserva(String id) {
+		Reserva res = Reserva.newBuilder().setId(Integer.parseInt(id)).setIdUsuario(id_usuario).setIdSala(0).setData("")
+				.setHorario("").build();
+
+		byte[] args = new byte[1024];
+		ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
+		try {
+			res.writeDelimitedTo(mensagem_em_bytes);
+		}catch (IOException e1) {
+			e1.printStackTrace();
+		}
+		args = mensagem_em_bytes.toByteArray();
+
+		Mensagem aux = doOperation("ReferenceReserva", "Metodo_ver_pedido_reserva", args);
+
+		MessageResponse msgcallback = null;
+		try {
+			msgcallback = MessageResponse
+					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+		} catch (java.lang.NullPointerException e) {
+			System.out.println("Servidor Não Respondeu!");			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return msgcallback.getMensagem();
+		
+		if(msgcallback!=null) {
+			return msgcallback.getMensagem();
+		}else {
+			return "";
+		}
 	}
 	
 	private byte[] EmpacotaCancelReserva(String id) {
@@ -216,30 +285,7 @@ public class Proxy {
 		return args;
 	}
 
-	public String VerPedidoReserva(String id) {
-		Reserva res = Reserva.newBuilder().setId(Integer.parseInt(id)).setIdUsuario(id_usuario).setIdSala(0).setData("")
-				.setHorario("").build();
 
-		byte[] args = new byte[1024];
-		ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
-		try {
-			res.writeDelimitedTo(mensagem_em_bytes);
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		args = mensagem_em_bytes.toByteArray();
-
-		Mensagem aux = doOperation("ReferenceReserva", "Metodo_ver_pedido_reserva", args);
-
-		MessageResponse msgcallback = null;
-		try {
-			msgcallback = MessageResponse
-					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return msgcallback.getMensagem();
-	}
 
 	public String Logar(String usuario, String senha) {
 		
@@ -290,13 +336,25 @@ public class Proxy {
 		boolean estouro = true;
 		
 		Mensagem resposta = null;
-//		for (int i = 0; i < 3; i++) {
-//			if(estouro) {
-//				estouro = false;				
-					byte[] m = udpclient.getReplay();
-					resposta = desempacotaMensagem(m);							
-//			}			
-//		}
+		for (int i = 0; i < 3; i++) {
+			if(estouro) {
+				estouro = false;				
+				byte[] m;
+				try {
+					m = udpclient.getReplay();
+					resposta = desempacotaMensagem(m);
+				} catch (Exception e) {
+					System.out.println(e.getMessage());
+					if(e.getMessage().equals("SocketTimeoutException")) {
+						//retransmite
+						System.out.println("Estouro : " + i);
+						estouro = true;
+						udpclient.sendRequest(data);
+					}					
+//					e.printStackTrace();
+				}																					
+			}			
+		}
 		
 		id_request += 1;
 		return resposta;

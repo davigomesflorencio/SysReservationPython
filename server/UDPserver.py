@@ -2,6 +2,7 @@ import socket
 import model.Mensagem_pb2
 from google.protobuf.internal import encoder
 from google.protobuf.internal import decoder
+import time
 from despachante import Despachante
 
 localIP = '127.0.0.1'
@@ -34,8 +35,15 @@ def desempacotaMensagem(args):
 def main():
     UDPServerSocket.bind((localIP, localPort))
     print("UDP server executando")
+    cont = -1
     while(True):
         mensagem,cliente = getRequest()
+
+        
+        #cont = cont + 1
+        #if(cont<2):
+        #    print(cont)
+        #    continue
         
         print("Tipo",mensagem.messageType)
         print("request id",mensagem.request_id)

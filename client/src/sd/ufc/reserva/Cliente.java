@@ -117,10 +117,10 @@ public class Cliente {
 			break;
 
 		case 6:
-			System.out.println(proxy.ListarPedidosReservas());
+			proxy.ListarPedidosReservas();
 			break;
 		case 7:
-			System.out.println(proxy.ListarReservas());
+			proxy.ListarReservas();
 			break;
 
 		case 8:
