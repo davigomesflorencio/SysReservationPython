@@ -30,9 +30,9 @@ class EsqueletoReserva:
         reserva = self.desempacotaReserva(args)
         msgresponse = MessageResponse()
         if(ServiceReserva().AdicionarPedidoReserva(reserva)):
-            msgresponse.mensagem = "Pedido adicionado"
+            msgresponse.mensagem = "Pedido de reserva adicionado"
         else:
-            msgresponse.mensagem = "Pedido não adicionado, já existe uma reserva com essas informações"
+            msgresponse.mensagem = "Pedido de reserva não adicionado, já existe uma reserva com essas informações"
         return self.empacota(msgresponse)
     
     def ver_pedido_reserva(self,args):
@@ -40,10 +40,10 @@ class EsqueletoReserva:
         req = ServiceReserva().VerPedidoReserva(reserva)
         msgresponse = MessageResponse()
         if(req==None):
-            msgresponse.mensagem = "Reserva não encontrada"
+            msgresponse.mensagem = "Reserva não encontrada: id "+reserva.id
         else:
             (ident,ident_usuario, id_sala,data,horario)=req
-            msgresponse.mensagem = "ID da reserva : "+ident+", ID sala : "+str(id_sala)+" ,Data : "+data+" , Horario : "+horario
+            msgresponse.mensagem = "ID da reserva : "+str(ident)+", ID sala : "+str(id_sala)+" ,Data : "+data+" , Horario : "+horario
         return self.empacota(msgresponse)
     
     def cancelar_pedido_reserva(self,args):

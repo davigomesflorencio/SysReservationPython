@@ -21,7 +21,7 @@ import sd.ufc.reserva.model.ObjectReserva.Reserva;
 public class Proxy {
 
 	UDPClient udpclient;
-	private int id_usuario = -1;
+	private static int id_usuario = -1;
 	private static int id_request = 0;
 
 	public Proxy() {
@@ -29,11 +29,11 @@ public class Proxy {
 	}
 
 	public boolean isLogado() {
-		return id_usuario != 1 ? true : false;
+		return id_usuario == -1 ? false : true;
 	}
 
 	public void Menu() {
-		if (isLogado()) {
+		if (isLogado() == false) {
 			System.out.println("\nDigite o n# da operação que deseja executar: ");
 			System.out.println("1. Listar Salas");
 			System.out.println("2. Logar");
@@ -45,8 +45,8 @@ public class Proxy {
 			System.out.println("1. Listar Salas");
 			System.out.println("\nPEDIDOS");
 			System.out.println("3. Realizar pedido de reserva");
-			System.out.println("4. Cancelar pedido de reserva");
-			System.out.println("5. Ver pedido pendentes");
+			System.out.println("4. Cancelar um pedido pendente de reserva");
+			System.out.println("5. Ver informações de um pedido pendente");
 			System.out.println("6. Listar pedidos de reservas pendentes");
 			System.out.println("\nRESERVAS");
 			System.out.println("7. Listar reservas futuras");
@@ -116,13 +116,15 @@ public class Proxy {
 				e.printStackTrace();
 			}
 
-			if (listreserva != null) {
+			if (listreserva.getReservasCount() != 0) {
 				int t = listreserva.getReservasCount();
 				for (int i = 0; i < t; i++) {
 					System.out.println("Sala : " + listreserva.getReservas(i).getIdSala() + " Horario: "
 							+ listreserva.getReservas(i).getHorario() + " Data: "
 							+ listreserva.getReservas(i).getData());
 				}
+			} else {
+				System.out.println("Lista de reservas futuras vazia");
 			}
 		} else {
 			System.out.println("Operação não executada: Por favor você deve-se logar");
@@ -161,7 +163,7 @@ public class Proxy {
 				e.printStackTrace();
 			}
 
-			if (listreserva != null) {
+			if (listreserva.getReservasCount() != 0) {
 				int t = listreserva.getReservasCount();
 				for (int i = 0; i < t; i++) {
 					System.out.println("ID : " + listreserva.getReservas(i).getId() + " Sala : "

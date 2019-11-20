@@ -216,7 +216,7 @@ class Api:
 
 	"""
 	def insertPedidoReserva(self,id_sala, id_usuario, data, horario):
-		if(self.existsReserva(id_sala,data,horario)!=None):
+		if(self.existsReserva(id_sala,data,horario)==None):
 			query = "INSERT INTO pedidos_reservas(id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s)"
 			args = (id_usuario, id_sala, data, horario)
 		

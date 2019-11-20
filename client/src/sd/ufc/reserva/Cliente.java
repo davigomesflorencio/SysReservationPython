@@ -34,31 +34,28 @@ public class Cliente {
 			break;
 
 		case 2:
-			if (proxy.isLogado()) {
-				System.out.println("Digite seu nome de usuário: ");
-				do {
-					try {
-						opt = stdin.readLine();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-				String usuarioLogin = opt;
+			System.out.println("Digite seu nome de usuário: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String usuarioLogin = opt;
 
-				System.out.println("Digite sua senha: ");
-				do {
-					try {
-						opt = stdin.readLine();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-				String senhaLogin = opt;
+			System.out.println("Digite sua senha: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String senhaLogin = opt;
 
-				System.out.println(proxy.Logar(usuarioLogin, senhaLogin));
-			} else {
-				System.out.println("Operação não existe: Por favor você deve-se logar");
-			}
+			System.out.println(proxy.Logar(usuarioLogin, senhaLogin));
+
 			break;
 
 		case 3:
