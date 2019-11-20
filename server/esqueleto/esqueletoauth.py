@@ -33,9 +33,9 @@ class EsqueletoAuth:
         res = ServiceAuth().CreateUser(cad_user.nome,cad_user.usuario,cad_user.senha,cad_user.cpf,cad_user.matricula,cad_user.curso)
         msgcallback = MessageCallback()
         if(res):
-            msgcallback.mensagem = "Cadastro realizado com sucesso"
+            msgcallback.mensagem = "Cadastrado"
         else:
-            msgcallback.mensagem = "Desculpe não foi possivel realizar o cadastro"
+            msgcallback.mensagem = "Nao cadastrado"
         return self.empacota(msgcallback)
     
     """

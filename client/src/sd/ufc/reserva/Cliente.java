@@ -124,6 +124,7 @@ public class Cliente {
 			break;
 
 		case 8:
+			
 			break;
 
 		case 9:
@@ -134,8 +135,71 @@ public class Cliente {
 			break;
 
 		case 11:
+			System.out.println("Digite seu nome: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String nomeCad=opt;
+			
+			System.out.println("Digite seu usuario: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String usuCad=opt;
+			
+			System.out.println("Digite sua senha: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String senCad=opt;
+			
+			System.out.println("Digite seu CPF: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String cpfCad=opt;
+			
+			System.out.println("Digite sua matricula: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String matCad=opt;
+			
+			System.out.println("Digite seu curso: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String curCad=opt;
+			
+			System.out.println(proxy.CadastrarUsuario(nomeCad,usuCad,senCad,cpfCad,matCad, curCad) );
+			break;
+		case 12:
 			System.out.println("Bye");
-			System.exit(0);
+			System.exit(0);			
 			break;
 
 		default:
@@ -160,7 +224,8 @@ public class Cliente {
 		System.out.println("9. Listar historico de reservas");
 		System.out.println("\nAPLICAÇÃO");
 		System.out.println("10. Deslogar");
-		System.out.println("11. Finalizar programa");
+		System.out.println("11. Cadastro no sistema");
+		System.out.println("12. Finalizar programa");
 	}
 
 	public static void main(String[] args) {

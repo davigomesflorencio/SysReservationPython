@@ -55,37 +55,37 @@ public class Proxy {
 		return args;
 	}
 	
-//	public String CadastrarUsuario(String nome, String usuario, String senha, String cpf, String matricula, String curso) {//cad proto
-//		byte[] args = new byte[1024];
-//		args = empacotaCadastro(nome,usuario,senha,cpf,matricula,curso);
-//		
-//		Mensagem aux = doOperation("ReferenceUsuario", "Metodo_cadastro_usuario", args);
-//
-//		MessageResponse msgResposta = null;
-//		
-//		try {
-//			msgResposta = MessageResponse.parseFrom(aux.getArguments());
-//		} catch (InvalidProtocolBufferException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}				
-//		
-//		return msgResposta.getMensagem();//string
-//	}
-//	
-//	private byte[] empacotaCadastro(String nome, String usuario, String senha, String cpf, String matricula, String curso) {
-//		CadastroUsuario cad = CadastroUsuario.newBuilder().setNome(nome).setUsuario(usuario).setSenha(senha).setCpf(cpf).setMatricula(matricula).setCurso(curso).build();
-//		
-//		ByteArrayOutputStream cad_em_bytes = new ByteArrayOutputStream(1024);
-//		try {
-//			cad.writeDelimitedTo(cad_em_bytes);
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		return cad_em_bytes.toByteArray();
-//	}
+	public String CadastrarUsuario(String nome, String usuario, String senha, String cpf, String matricula, String curso) {//cad proto
+		byte[] args = new byte[1024];
+		args = empacotaCadastro(nome,usuario,senha,cpf,matricula,curso);
+		
+		Mensagem aux = doOperation("ReferenceAuth", "Metodo_cadastro_usuario", args);
+
+		MessageResponse msgResposta = null;
+		
+		try {
+			msgResposta = MessageResponse.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}				
+		
+		return msgResposta.getMensagem();//string
+	}
+	
+	private byte[] empacotaCadastro(String nome, String usuario, String senha, String cpf, String matricula, String curso) {
+		CadastroUsuario cad = CadastroUsuario.newBuilder().setNome(nome).setUsuario(usuario).setSenha(senha).setCpf(cpf).setMatricula(matricula).setCurso(curso).build();
+		
+		ByteArrayOutputStream cad_em_bytes = new ByteArrayOutputStream(1024);
+		try {
+			cad.writeDelimitedTo(cad_em_bytes);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return cad_em_bytes.toByteArray();
+	}
 
 	public String ListarReservas() {
 		byte[] args = new byte[1024];

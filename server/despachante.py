@@ -24,8 +24,8 @@ class Despachante:
         
         if(Mensagem.object_reference=="ReferenceAuth"):
             if(Mensagem.method=="Metodo_autenticar"):
-                return EsqueletoAuth().auth(Mensagem.arguments)
-            if(Mensagem.method=="Metodo_cadastro_usuario"):
+                return EsqueletoAuth().auth(Mensagem.arguments)                
+            if(Mensagem.method=="Metodo_cadastro_usuario"):                
                 return EsqueletoAuth().cadastro_usuario(Mensagem.arguments)
 
         
