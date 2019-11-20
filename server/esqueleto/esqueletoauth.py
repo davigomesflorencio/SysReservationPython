@@ -2,7 +2,7 @@ from services.ServiceAuth import ServiceAuth
 from model.AuthUsuario_pb2 import AuthUsuario
 from model.CadastroUsuario_pb2 import CadastroUsuario
 
-from model.MessageCallback_pb2 import MessageCallback
+from model.MessageResponse_pb2 import MessageResponse
 from model.Identificacao_pb2 import Identificacao
 from google.protobuf.internal import encoder
 from google.protobuf.internal import decoder
@@ -31,7 +31,7 @@ class EsqueletoAuth:
     def cadastro_usuario(self,args):
         cad_user = self.desempacotaCadastroUsuario(args)
         res = ServiceAuth().CreateUser(cad_user.nome,cad_user.usuario,cad_user.senha,cad_user.cpf,cad_user.matricula,cad_user.curso)
-        msgcallback = MessageCallback()
+        msgcallback = MessageResponse()
         if(res):
             msgcallback.mensagem = "Cadastrado"
         else:

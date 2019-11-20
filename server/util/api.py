@@ -127,7 +127,7 @@ class Api:
 			return None
 
 		finally:
-			cursor.close()
+			#cursor.close()
 			conn.close()
 
 	"""
@@ -260,7 +260,7 @@ class Api:
 
 		if(res != None):
 			print(res)
-			ident, id_sala, id_usuario, horario, data = res
+			ident, id_sala, id_usuario, data, horario = res
 			if(dt.strptime(data, "%d/%m/%Y").strftime("%d/%m/%Y") >= dt.today().strftime("%d/%m/%Y")):
 				query = "DELETE FROM pedidos_reservas WHERE id = %s and id_usuario= %s"
 				conn = self.dbconfig()

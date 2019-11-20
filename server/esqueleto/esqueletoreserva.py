@@ -41,7 +41,9 @@ class EsqueletoReserva:
         msgcallback = MessageResponse()
         if(req==None):
             msgcallback.mensagem = "Reserva não encontrada"
-        msgcallback.mensagem = "Reserva: id "+str(req.id)+", id da sala "+str(req.id_sala)+", data "+req.data+", horario "+horario
+        else:
+            (ident,ident_usuario, id_sala,data,horario)=req
+            msgcallback.mensagem = "ID sala: "+str(id_sala)+" Data: "+data+" Horario: "+horario
         return self.empacota(msgcallback)
     
     def cancelar_pedido_reserva(self,args):
