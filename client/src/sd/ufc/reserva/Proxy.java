@@ -434,6 +434,12 @@ public class Proxy {
 		Mensagem msg = null;
 		try {
 			msg = Mensagem.parseDelimitedFrom(new ByteArrayInputStream(args));
+			if (msg.getMessageType() == 1) {
+				System.out.println("Mensagem de resposta");
+			} else {
+				msg = null;
+				System.out.println("Mensagem de requisição : ErroMsg - era esperado uma mensagem de resposta");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
