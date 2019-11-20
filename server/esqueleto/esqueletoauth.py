@@ -31,12 +31,12 @@ class EsqueletoAuth:
     def cadastro_usuario(self,args):
         cad_user = self.desempacotaCadastroUsuario(args)
         res = ServiceAuth().CreateUser(cad_user.nome,cad_user.usuario,cad_user.senha,cad_user.cpf,cad_user.matricula,cad_user.curso)
-        msgcallback = MessageResponse()
+        msgresponse = MessageResponse()
         if(res):
-            msgcallback.mensagem = "Cadastrado"
+            msgresponse.mensagem = "Cadastrado realizado com sucesso"
         else:
-            msgcallback.mensagem = "Nao cadastrado"
-        return self.empacota(msgcallback)
+            msgresponse.mensagem = "Não foi possivel realizar o cadastro: Utilize outro nome de usuário"
+        return self.empacota(msgresponse)
     
     """
 

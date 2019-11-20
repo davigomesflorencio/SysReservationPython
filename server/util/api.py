@@ -85,28 +85,31 @@ class Api:
 	"""
 
 	def insertUsuario(self,nome,usuario,senha,cpf,matricula,curso):
-		query = "INSERT INTO usuario(nome,usuario,senha,cpf,matricula,curso) VALUES (%s,%s,md5(%s),%s,%s,%s)"
-		args = (nome,usuario,senha,cpf,matricula,curso)
-		conn = self.dbconfig()
-		cursor = conn.cursor()
-		try:
-			cursor.execute(query, args)
+		if(self.existsUsuario(usuario,senha)!=None):
+			query = "INSERT INTO usuario(nome,usuario,senha,cpf,matricula,curso) VALUES (%s,%s,md5(%s),%s,%s,%s)"
+			args = (nome,usuario,senha,cpf,matricula,curso)
+			conn = self.dbconfig()
+			cursor = conn.cursor()
+			try:
+				cursor.execute(query, args)
 
-			r = False
-			if cursor.lastrowid:
-				r = True
-			else:
 				r = False
+				if cursor.lastrowid:
+					r = True
+				else:
+					r = False
 
-			conn.commit()
-			return r
-		except Error as error:
-			print(error)
+				conn.commit()
+				return r
+			except Error as error:
+				print(error)
+				return False
+
+			finally:
+				cursor.close()
+				conn.close()
+		else:
 			return False
-
-		finally:
-			cursor.close()
-			conn.close()
 
 
 	def existsUsuario(self,usuario,senha):
@@ -213,29 +216,29 @@ class Api:
 
 	"""
 	def insertPedidoReserva(self,id_sala, id_usuario, data, horario):
-		query = "INSERT INTO pedidos_reservas(id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s)"
-		args = (id_usuario, id_sala, data, horario)
-	
-		conn = self.dbconfig()
-		cursor = conn.cursor()
-		try:
-			cursor.execute(query, args)
+		if(self.existsReserva(id_sala,data,horario)!=None):
+			query = "INSERT INTO pedidos_reservas(id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s)"
+			args = (id_usuario, id_sala, data, horario)
+		
+			conn = self.dbconfig()
+			cursor = conn.cursor()
+			try:
+				cursor.execute(query, args)
 
-			r = False
-			if cursor.lastrowid:
-				r = True
-			else:
 				r = False
+				if cursor.lastrowid:
+					r = True
+				conn.commit()
+				return r
+			except Error as error:
+				print(error)
+				return False
 
-			conn.commit()
-			return r
-		except Error as error:
-			print(error)
+			finally:
+				cursor.close()
+				conn.close()
+		else:
 			return False
-
-		finally:
-			cursor.close()
-			conn.close()
 
 	def selectOnePedidoReserva(self,id_reserva):
 		query = "select * from pedidos_reservas where id=%s"
@@ -298,6 +301,24 @@ class Api:
 		finally:
 			cursor.close()
 			conn.close()
+	
+	def existsReserva(self,id_sala,data,horario):
+		query = "select * from reservas where id_sala=%s and data=%s and horario=%s"
+		args = (id_sala,data,horario)
+		conn = self.dbconfig()
+		cursor = conn.cursor()
+		try:
+			cursor.execute(query, args)
+			reserva = cursor.fetchone()
+			conn.commit()
+			return reserva
+		except Error as error:
+			print(error)
+			return ()
+		finally:
+			cursor.close()
+			conn.close()
+
 	"""
 
 		RESERVAS
