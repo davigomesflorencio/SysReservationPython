@@ -61,7 +61,7 @@ def main():
             #    continue
             # imprimeInfoMensagem(mensagem)
             des = Despachante
-            # sendReply(mensagem, des.invoke(mensagem), cliente)
+            sendReply(mensagem, des.invoke(mensagem), cliente)
         else:
             print("Mensagem duplicada : ID -> ", lastMessageID)
 
