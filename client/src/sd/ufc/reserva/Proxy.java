@@ -351,16 +351,14 @@ public class Proxy {
 		args = EmpacotaLogin(usuario, senha);
 
 		Mensagem aux = doOperation("ReferenceAuth", "Metodo_autenticar", args);
-
+		Identificacao ident = null;
 		try {
-			Identificacao ident = Identificacao
-					.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+			ident = Identificacao.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 			id_usuario = ident.getId();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (id_usuario > 0) {
+		if (id_usuario != -1) {
 			return "Login realizado com sucesso";
 		}
 		return "Não foi possivel realizar o login: Usuario ou senha incorretos";
@@ -401,14 +399,14 @@ public class Proxy {
 					m = udpclient.getReplay();
 					resposta = desempacotaMensagem(m);
 				} catch (Exception e) {
-					System.out.println(e.getMessage());
+//			System.out.println(e.getMessage());
 					if (e.getMessage().equals("SocketTimeoutException")) {
 						// retransmite
-						System.out.println("Estouro : " + i);
+//				System.out.println("Estouro : ");
 						estouro = true;
 						udpclient.sendRequest(data);
 					}
-//					e.printStackTrace();
+//			e.printStackTrace();
 				}
 			}
 		}
@@ -435,10 +433,10 @@ public class Proxy {
 		try {
 			msg = Mensagem.parseDelimitedFrom(new ByteArrayInputStream(args));
 			if (msg.getMessageType() == 1) {
-				System.out.println("Mensagem de resposta");
+//				System.out.println("Mensagem de resposta");
 			} else {
 				msg = null;
-				System.out.println("Mensagem de requisição : ErroMsg - era esperado uma mensagem de resposta");
+//				System.out.println("Mensagem de requisição : ErroMsg - era esperado uma mensagem de resposta");
 			}
 		} catch (IOException e) {
 			e.printStackTrace();

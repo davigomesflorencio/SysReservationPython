@@ -40,10 +40,10 @@ class EsqueletoReserva:
         req = ServiceReserva().VerPedidoReserva(reserva)
         msgresponse = MessageResponse()
         if(req==None):
-            msgresponse.mensagem = "Reserva não encontrada: id "+reserva.id
+            msgresponse.mensagem = "Reserva não encontrada: ID da reserva "+str(reserva.id)
         else:
             (ident,ident_usuario, id_sala,data,horario)=req
-            msgresponse.mensagem = "ID da reserva : "+str(ident)+", ID sala : "+str(id_sala)+" ,Data : "+data+" , Horario : "+horario
+            msgresponse.mensagem = "Reserva encontrada : ID da reserva : "+str(ident)+", ID da sala : "+str(id_sala)+" ,Data : "+data+" , Horario : "+horario
         return self.empacota(msgresponse)
     
     def cancelar_pedido_reserva(self,args):
@@ -51,9 +51,9 @@ class EsqueletoReserva:
         req = ServiceReserva().CancelarPedidoReserva(reserva)
         msgresponse = MessageResponse()
         if(req==True):
-            msgresponse.mensagem = "Pedido de reserva cancelado: id "+str(reserva.id)
+            msgresponse.mensagem = "Pedido de reserva cancelado: ID solicitado "+str(reserva.id)
         else:
-            msgresponse.mensagem = "Desculpe não foi possivel cancelar a reserva identificação não encontrada: id "+str(reserva.id)
+            msgresponse.mensagem = "Desculpe não foi possivel cancelar a reserva com a identificação solicitado : ID da reserva "+str(reserva.id)
         return self.empacota(msgresponse)
 
     """

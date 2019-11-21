@@ -19,6 +19,7 @@ def getRequest():
 
 
 def sendReply(msg, args, adress):
+    lastMessageID = msg.request_id
     msg.messageType = 1
     msg.arguments = args
     msg = empacotaMensagem(msg)
@@ -54,7 +55,6 @@ def main():
     while(True):
         mensagem, cliente = getRequest()
         if(lastMessageID != mensagem.request_id):
-            lastMessageID = mensagem.request_id
             #cont = cont + 1
             #if(cont<2):
             #    print(cont)
