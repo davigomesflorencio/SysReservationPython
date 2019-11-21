@@ -8,7 +8,6 @@ from despachante import Despachante
 localIP = '127.0.0.1'
 localPort = 20001
 bufferSize = 1024
-lastMessageID = None
 UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
 
@@ -19,7 +18,6 @@ def getRequest():
 
 
 def sendReply(msg, args, adress):
-    lastMessageID = msg.request_id
     msg.messageType = 1
     msg.arguments = args
     msg = empacotaMensagem(msg)
@@ -52,16 +50,18 @@ def main():
     UDPServerSocket.bind((localIP, localPort))
     print("UDP server executando")
     cont = -1
+    lastMessageID = None
     while(True):
         mensagem, cliente = getRequest()
         if(lastMessageID != mensagem.request_id):
+            lastMessageID = mensagem.request_id
             #cont = cont + 1
             #if(cont<2):
             #    print(cont)
             #    continue
-            imprimeInfoMensagem(mensagem)
+            # imprimeInfoMensagem(mensagem)
             des = Despachante
-            sendReply(mensagem, des.invoke(mensagem), cliente)
+            # sendReply(mensagem, des.invoke(mensagem), cliente)
         else:
             print("Mensagem duplicada : ID -> ", lastMessageID)
 
