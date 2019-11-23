@@ -188,7 +188,7 @@ public class Proxy {
 
 	public String CadastrarUsuario(String nome, String usuario, String senha, String cpf, String matricula,
 			String curso) {// cad proto
-		if (isLogado()) {
+		if (!isLogado()) {
 			byte[] args = new byte[1024];
 			args = empacotaCadastro(nome, usuario, senha, cpf, matricula, curso);
 
@@ -314,7 +314,7 @@ public class Proxy {
 				msgcallback = MessageResponse
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 			} catch (java.lang.NullPointerException e) {
-				System.out.println("Servidor N�o Respondeu!");
+				System.out.println("Sem tempo de resposta do servidor!");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

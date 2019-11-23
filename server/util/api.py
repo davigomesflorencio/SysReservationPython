@@ -129,9 +129,9 @@ class Api:
 			print(error)
 			return None
 
-		finally:
+		# finally:
 			#cursor.close()
-			conn.close()
+			# conn.close()
 
 	"""
 
@@ -263,8 +263,8 @@ class Api:
 
 		if(res != None):
 			print(res)
-			ident, id_sala, id_usuario, data, horario = res
-			if(dt.strptime(data, "%d/%m/%Y").strftime("%d/%m/%Y") >= dt.today().strftime("%d/%m/%Y")):
+			ident, id_usuario, id_sala, data, horario = res
+			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
 				query = "DELETE FROM pedidos_reservas WHERE id = %s and id_usuario= %s"
 				conn = self.dbconfig()
 				cursor = conn.cursor()
@@ -280,6 +280,7 @@ class Api:
 					cursor.close()
 					conn.close()
 			else:
+				print("asklaskla")
 				return False
 		else:
 			return False
@@ -347,7 +348,7 @@ class Api:
 		reserva = selectOneReserva(id_reserva)
 
 		if(reserva != ()):
-			(ident, id_sala, id_usuario, data, horario) = reserva
+			(ident,id_usuario ,id_sala, data, horario) = reserva
 			if(dt.strptime(data, "%d/%m/%Y") >= dt.today().strftime("%d/%m/%Y")):
 				query = "DELETE FROM reservas WHERE id = %s"
 				try:
