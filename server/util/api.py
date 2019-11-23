@@ -85,29 +85,50 @@ class Api:
 	"""
 
 	def insertUsuario(self,nome,usuario,senha,cpf,matricula,curso):
-		query = "INSERT INTO usuario(nome,usuario,senha,cpf,matricula,curso) VALUES (%s,%s,md5(%s),%s,%s,%s)"
-		args = (nome,usuario,senha,cpf,matricula,curso)
+		if(self.existsNomeUsuario(usuario)==None):
+			query = "INSERT INTO usuario(nome,usuario,senha,cpf,matricula,curso) VALUES (%s,%s,md5(%s),%s,%s,%s)"
+			args = (nome,usuario,senha,cpf,matricula,curso)
+			conn = self.dbconfig()
+			cursor = conn.cursor()
+			try:
+				cursor.execute(query, args)
+
+				r = False
+				if cursor.lastrowid:
+					r = True
+				else:
+					r = False
+
+				conn.commit()
+				return r
+			except Error as error:
+				print(error)
+				return False
+
+			finally:
+				cursor.close()
+				conn.close()
+		else:
+			return False
+
+	def existsNomeUsuario(self,usuario):
+		query = "select * from usuario where usuario=%s"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
-			cursor.execute(query, args)
+			cursor.execute(query,(usuario,))
+			usuario = cursor.fetchone()
+			r=None
+			if(cursor.rowcount>0):
+				r=usuario
 
-			r = False
-			if cursor.lastrowid:
-				r = True
-			else:
-				r = False
-
-			conn.commit()
 			return r
 		except Error as error:
 			print(error)
-			return False
+			return None
 
 		finally:
-			cursor.close()
 			conn.close()
-
 
 	def existsUsuario(self,usuario,senha):
 		query = "select * from usuario where usuario=%s and senha=md5(%s)"
@@ -119,7 +140,6 @@ class Api:
 			r=None
 			if(cursor.rowcount>0):
 				r=usuario
-			conn.commit()
 
 			return r
 		except Error as error:
@@ -127,7 +147,6 @@ class Api:
 			return None
 
 		finally:
-			#cursor.close()
 			conn.close()
 
 	"""
@@ -213,29 +232,33 @@ class Api:
 
 	"""
 	def insertPedidoReserva(self,id_sala, id_usuario, data, horario):
-		query = "INSERT INTO pedidos_reservas(id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s)"
-		args = (id_usuario, id_sala, data, horario)
-	
-		conn = self.dbconfig()
-		cursor = conn.cursor()
-		try:
-			cursor.execute(query, args)
+		if(self.existsReserva(id_sala,data,horario)==None):
+			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
+				query = "INSERT INTO pedidos_reservas(id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s)"
+				args = (id_usuario, id_sala, data, horario)
+			
+				conn = self.dbconfig()
+				cursor = conn.cursor()
+				try:
+					cursor.execute(query, args)
 
-			r = False
-			if cursor.lastrowid:
-				r = True
+					r = False
+					if cursor.lastrowid:
+						r = True
+					conn.commit()
+					return r
+				except Error as error:
+					print(error)
+					return False
+
+				finally:
+					cursor.close()
+					conn.close()
 			else:
-				r = False
-
-			conn.commit()
-			return r
-		except Error as error:
-			print(error)
+				print("Data anterior a atual")
+				return False
+		else:
 			return False
-
-		finally:
-			cursor.close()
-			conn.close()
 
 	def selectOnePedidoReserva(self,id_reserva):
 		query = "select * from pedidos_reservas where id=%s"
@@ -260,8 +283,8 @@ class Api:
 
 		if(res != None):
 			print(res)
-			ident, id_sala, id_usuario, data, horario = res
-			if(dt.strptime(data, "%d/%m/%Y").strftime("%d/%m/%Y") >= dt.today().strftime("%d/%m/%Y")):
+			ident, id_usuario, id_sala, data, horario = res
+			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
 				query = "DELETE FROM pedidos_reservas WHERE id = %s and id_usuario= %s"
 				conn = self.dbconfig()
 				cursor = conn.cursor()
@@ -298,6 +321,24 @@ class Api:
 		finally:
 			cursor.close()
 			conn.close()
+	
+	def existsReserva(self,id_sala,data,horario):
+		query = "select * from reservas where id_sala=%s and data=%s and horario=%s"
+		args = (id_sala,data,horario)
+		conn = self.dbconfig()
+		cursor = conn.cursor()
+		try:
+			cursor.execute(query, args)
+			reserva = cursor.fetchone()
+			conn.commit()
+			return reserva
+		except Error as error:
+			print(error)
+			return ()
+		finally:
+			cursor.close()
+			conn.close()
+
 	"""
 
 		RESERVAS
@@ -326,7 +367,7 @@ class Api:
 		reserva = selectOneReserva(id_reserva)
 
 		if(reserva != ()):
-			(ident, id_sala, id_usuario, data, horario) = reserva
+			(ident,id_usuario ,id_sala, data, horario) = reserva
 			if(dt.strptime(data, "%d/%m/%Y") >= dt.today().strftime("%d/%m/%Y")):
 				query = "DELETE FROM reservas WHERE id = %s"
 				try:

@@ -34,172 +34,204 @@ public class Cliente {
 			break;
 
 		case 2:
-			System.out.println("Digite Seu Usu�rio: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String usuarioLogin=opt;
-			
-			System.out.println("Digite Sua Senha: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String senhaLogin=opt;
-			
-			System.out.println(proxy.Logar(usuarioLogin, senhaLogin));
+			if (proxy.isLogado() == false) {
+				System.out.println("Digite seu nome de usuário: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String usuarioLogin = opt;
+
+				System.out.println("Digite sua senha: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String senhaLogin = opt;
+
+				System.out.println(proxy.Logar(usuarioLogin, senhaLogin));
+			} else {
+				System.out.println("Operação não existe");
+			}
 			break;
 
 		case 3:
-			System.out.println("Digite a Sala Desejada: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String idSala=opt;
-			
-			System.out.println("Digite a Data: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String data=opt;
-			
-			System.out.println("Digite o Horario: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String horario=opt;
-			System.out.println(proxy.RealizarPedidoReserva(idSala, data, horario));
+			if (proxy.isLogado()) {
+				System.out.println("Digite o id da sala desejada: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String idSala = opt;
+
+				System.out.println("Digite a data: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String data = opt;
+
+				System.out.println("Digite o horario: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String horario = opt;
+				System.out.println(proxy.RealizarPedidoReserva(idSala, data, horario));
+			} else {
+				System.out.println("Operação não existe: Por favor você deve-se logar");
+			}
 			break;
 
 		case 4:
-			System.out.println("Digite o id do pedido: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String pedC=opt;
-			
-			System.out.println(proxy.CancelarPedidoReserva(pedC));
+			if (proxy.isLogado()) {
+				System.out.println("Digite o id do pedido: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String pedC = opt;
+
+				System.out.println(proxy.CancelarPedidoReserva(pedC));
+			} else {
+				System.out.println("Operação não existe: Por favor você deve-se logar");
+			}
 			break;
 		case 5:
-			System.out.println("Digite o id do pedido: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String pedCR=opt;
-			System.out.println(proxy.VerPedidoReserva(pedCR));
+			if (proxy.isLogado()) {
+				System.out.println("Digite o id do pedido: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String pedCR = opt;
+				System.out.println(proxy.VerPedidoReserva(pedCR));
+			} else {
+				System.out.println("Operação não existe: Por favor você deve-se logar");
+			}
 			break;
 
 		case 6:
-			proxy.ListarPedidosReservas();
+			if (proxy.isLogado()) {
+				proxy.ListarPedidosReservas();
+			} else {
+				System.out.println("Operação não existe: Por favor você deve-se logar");
+			}
 			break;
 		case 7:
-			proxy.ListarReservas();
+			if (proxy.isLogado()) {
+				proxy.ListarReservas();
+			} else {
+				System.out.println("Operação não existe: Por favor você deve-se logar");
+			}
 			break;
 
 		case 8:
-			
+
 			break;
 
 		case 9:
 			break;
 
 		case 10:
-			System.out.println(proxy.Deslogar());
+			if (proxy.isLogado()) {
+				System.out.println(proxy.Deslogar());
+			} else {
+				System.out.println("Operação não existe: Por favor você deve-se logar");
+			}
 			break;
 
 		case 11:
-			System.out.println("Digite seu nome: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String nomeCad=opt;
-			
-			System.out.println("Digite seu usuario: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String usuCad=opt;
-			
-			System.out.println("Digite sua senha: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String senCad=opt;
-			
-			System.out.println("Digite seu CPF: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String cpfCad=opt;
-			
-			System.out.println("Digite sua matricula: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String matCad=opt;
-			
-			System.out.println("Digite seu curso: ");
-			do {
-				try {
-					opt = stdin.readLine();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			String curCad=opt;
-			
-			System.out.println(proxy.CadastrarUsuario(nomeCad,usuCad,senCad,cpfCad,matCad, curCad) );
+			if (proxy.isLogado() == false) {
+				System.out.println("Digite seu nome: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String nomeCad = opt;
+
+				System.out.println("Digite o nome usuário que você deseja: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String usuCad = opt;
+
+				System.out.println("Digite a senha que voce deseja: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String senCad = opt;
+
+				System.out.println("Digite seu CPF: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String cpfCad = opt;
+
+				System.out.println("Digite sua matricula: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String matCad = opt;
+
+				System.out.println("Digite seu curso: ");
+				do {
+					try {
+						opt = stdin.readLine();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+				String curCad = opt;
+
+				System.out.println(proxy.CadastrarUsuario(nomeCad, usuCad, senCad, cpfCad, matCad, curCad));
+			} else {
+				System.out.println("Operação não existe: Por favor você deve-se logar");
+			}
 			break;
 		case 12:
 			System.out.println("Bye");
-			System.exit(0);			
+			System.exit(0);
 			break;
 
 		default:
@@ -209,30 +241,11 @@ public class Cliente {
 		return operacao;
 	}
 
-	public void printMenu() {
-		System.out.println("\nDigite o n# da operação que deseja executar: ");
-		System.out.println("1. Listar Salas");
-		System.out.println("2. Logar");
-		System.out.println("\nPEDIDOS");
-		System.out.println("3. Realizar pedido de reserva");
-		System.out.println("4. Cancelar pedido de reserva");
-		System.out.println("5. Ver pedido de reserva");
-		System.out.println("6. Listar pedidos de reservas");
-		System.out.println("\nRESERVAS");
-		System.out.println("7. Listar reservas");
-		System.out.println("8. Cancelar reserva");
-		System.out.println("9. Listar historico de reservas");
-		System.out.println("\nAPLICAÇÃO");
-		System.out.println("10. Deslogar");
-		System.out.println("11. Cadastro no sistema");
-		System.out.println("12. Finalizar programa");
-	}
-
 	public static void main(String[] args) {
 		Cliente cli = new Cliente();
 		int operacao = -1;
 		do {
-			cli.printMenu();
+			cli.proxy.Menu();
 			operacao = cli.selecionaOperacao();
 		} while (operacao != 0);
 	}

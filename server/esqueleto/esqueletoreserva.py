@@ -28,33 +28,33 @@ class EsqueletoReserva:
 
     def adicionar_pedido_reserva(self,args):
         reserva = self.desempacotaReserva(args)
-        msgcallback = MessageResponse()
+        msgresponse = MessageResponse()
         if(ServiceReserva().AdicionarPedidoReserva(reserva)):
-            msgcallback.mensagem = "Pedido adicionado"
+            msgresponse.mensagem = "Pedido de reserva adicionado"
         else:
-            msgcallback.mensagem = "Pedido não adicionado"
-        return self.empacota(msgcallback)
+            msgresponse.mensagem = "Pedido de reserva não adicionado"
+        return self.empacota(msgresponse)
     
     def ver_pedido_reserva(self,args):
         reserva = self.desempacotaReserva(args)
         req = ServiceReserva().VerPedidoReserva(reserva)
-        msgcallback = MessageResponse()
+        msgresponse = MessageResponse()
         if(req==None):
-            msgcallback.mensagem = "Reserva não encontrada"
+            msgresponse.mensagem = "Reserva não encontrada: ID da reserva "+str(reserva.id)
         else:
             (ident,ident_usuario, id_sala,data,horario)=req
-            msgcallback.mensagem = "ID sala: "+str(id_sala)+" Data: "+data+" Horario: "+horario
-        return self.empacota(msgcallback)
+            msgresponse.mensagem = "Reserva encontrada : ID da reserva : "+str(ident)+", ID da sala : "+str(id_sala)+" ,Data : "+data+" , Horario : "+horario
+        return self.empacota(msgresponse)
     
     def cancelar_pedido_reserva(self,args):
         reserva = self.desempacotaReserva(args)
         req = ServiceReserva().CancelarPedidoReserva(reserva)
-        msgcallback = MessageResponse()
+        msgresponse = MessageResponse()
         if(req==True):
-            msgcallback.mensagem = "Pedido de reserva cancelado: id "+str(reserva.id)
+            msgresponse.mensagem = "Pedido de reserva cancelado: ID solicitado "+str(reserva.id)
         else:
-            msgcallback.mensagem = "Desculpe não foi possivel cancelar a reserva: id "+str(reserva.id)
-        return self.empacota(msgcallback)
+            msgresponse.mensagem = "Desculpe não foi possivel cancelar a reserva com a identificação solicitado : ID da reserva "+str(reserva.id)
+        return self.empacota(msgresponse)
 
     """
 
