@@ -85,7 +85,7 @@ class Api:
 	"""
 
 	def insertUsuario(self,nome,usuario,senha,cpf,matricula,curso):
-		if(self.existsUsuario(usuario,senha)!=None):
+		if(self.existsNomeUsuario(usuario)==None):
 			query = "INSERT INTO usuario(nome,usuario,senha,cpf,matricula,curso) VALUES (%s,%s,md5(%s),%s,%s,%s)"
 			args = (nome,usuario,senha,cpf,matricula,curso)
 			conn = self.dbconfig()
@@ -111,6 +111,24 @@ class Api:
 		else:
 			return False
 
+	def existsNomeUsuario(self,usuario):
+		query = "select * from usuario where usuario=%s"
+		conn = self.dbconfig()
+		cursor = conn.cursor()
+		try:
+			cursor.execute(query,(usuario,))
+			usuario = cursor.fetchone()
+			r=None
+			if(cursor.rowcount>0):
+				r=usuario
+
+			return r
+		except Error as error:
+			print(error)
+			return None
+
+		finally:
+			conn.close()
 
 	def existsUsuario(self,usuario,senha):
 		query = "select * from usuario where usuario=%s and senha=md5(%s)"
@@ -122,16 +140,14 @@ class Api:
 			r=None
 			if(cursor.rowcount>0):
 				r=usuario
-			conn.commit()
 
 			return r
 		except Error as error:
 			print(error)
 			return None
 
-		# finally:
-			#cursor.close()
-			# conn.close()
+		finally:
+			conn.close()
 
 	"""
 

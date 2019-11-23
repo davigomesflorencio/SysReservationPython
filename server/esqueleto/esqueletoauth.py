@@ -38,7 +38,7 @@ class EsqueletoAuth:
             msgresponse.mensagem = "Não foi possivel realizar o cadastro: Utilize outro nome de usuário"
         return self.empacota(msgresponse)
     
-    """
+    """"
 
         SERIALIZAÇÂO E DESERIALIZAÇÃO DAS IDL'S
 
