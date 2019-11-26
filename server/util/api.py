@@ -11,12 +11,13 @@ class Api:
 		CONFIG
 
 	"""
+
 	def dbconfig(self):
 		conn = mysql.connector.connect(
-				host="localhost",
-				user="root",
-				password="root",
-				database="reserva"
+                    host="localhost",
+                    user="root",
+                    password="root",
+                    database="reserva"
 		)
 		return conn
 
@@ -25,50 +26,51 @@ class Api:
 		CREATE TABLES
 
 	"""
+
 	def createTables(self):
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 
 		try:
 			cursor.execute(
-					"CREATE TABLE usuario"
-					+"(id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT"
-					+",nome VARCHAR(255) NOT NULL"
-					+",usuario VARCHAR(255) NOT NULL"
-					+",senha VARCHAR(255) NOT NULL"
-					+",cpf VARCHAR(255) NOT NULL"
-					+",matricula VARCHAR(6) NOT NULL"
-					+",curso VARCHAR(255) NOT NULL)")
-			
+                            "CREATE TABLE usuario"
+                       					+ "(id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT"
+                       					+ ",nome VARCHAR(255) NOT NULL"
+                       					+ ",usuario VARCHAR(255) NOT NULL"
+                       					+ ",senha VARCHAR(255) NOT NULL"
+                       					+ ",cpf VARCHAR(255) NOT NULL"
+                       					+ ",matricula VARCHAR(6) NOT NULL"
+                       					+ ",curso VARCHAR(255) NOT NULL)")
+
 			cursor.execute(
-					"CREATE TABLE salas"
-					+"(id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT"
-					+",nome VARCHAR(255) NOT NULL"
-					+",bloco VARCHAR(255) NOT NULL)")
+                            "CREATE TABLE salas"
+                       					+ "(id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT"
+                       					+ ",nome VARCHAR(255) NOT NULL"
+                       					+ ",bloco VARCHAR(255) NOT NULL)")
 
 			cursor.execute("CREATE TABLE pedidos_reservas"
-					+"(id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT"
-					+",id_usuario INT(11) NOT NULL"
-					+",id_sala INT(11) NOT NULL"
-					+",data VARCHAR(255) NOT NULL"
-					+",horario VARCHAR(255) NOT NULL)")
-			
+                            + "(id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT"
+                            + ",id_usuario INT(11) NOT NULL"
+                            + ",id_sala INT(11) NOT NULL"
+                            + ",data VARCHAR(255) NOT NULL"
+                            + ",horario VARCHAR(255) NOT NULL)")
+
 			cursor.execute("CREATE TABLE reservas"
-					+"(id INT(11) NOT NULL PRIMARY KEY"
-					+",id_usuario INT(11) NOT NULL"
-					+",id_sala INT(11) NOT NULL"
-					+",data VARCHAR(255) NOT NULL"
-					+",horario VARCHAR(255) NOT NULL)")
+                            + "(id INT(11) NOT NULL PRIMARY KEY"
+                            + ",id_usuario INT(11) NOT NULL"
+                            + ",id_sala INT(11) NOT NULL"
+                            + ",data VARCHAR(255) NOT NULL"
+                            + ",horario VARCHAR(255) NOT NULL)")
 
 			cursor.execute(
-					"ALTER TABLE pedidos_reservas ADD CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id)")
+                            "ALTER TABLE pedidos_reservas ADD CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id)")
 			cursor.execute(
-					"ALTER TABLE pedidos_reservas ADD CONSTRAINT fk_id_sala FOREIGN KEY (id_sala) REFERENCES salas(id)")
+                            "ALTER TABLE pedidos_reservas ADD CONSTRAINT fk_id_sala FOREIGN KEY (id_sala) REFERENCES salas(id)")
 
 			cursor.execute(
-					"ALTER TABLE reservas ADD CONSTRAINT fk_id_usuario_reserva FOREIGN KEY (id_usuario) REFERENCES usuario(id)")
+                            "ALTER TABLE reservas ADD CONSTRAINT fk_id_usuario_reserva FOREIGN KEY (id_usuario) REFERENCES usuario(id)")
 			cursor.execute(
-					"ALTER TABLE reservas ADD CONSTRAINT fk_id_sala_reserva FOREIGN KEY (id_sala) REFERENCES salas(id)")
+                            "ALTER TABLE reservas ADD CONSTRAINT fk_id_sala_reserva FOREIGN KEY (id_sala) REFERENCES salas(id)")
 
 		except Error as error:
 			print(error)
@@ -77,21 +79,16 @@ class Api:
 			cursor.close()
 			conn.close()
 
-
 	"""
 
 		USUARIO
 
 	"""
 
-	def insertUsuario(self,nome,usuario,senha,cpf,matricula,curso):
-<<<<<<< HEAD
-		if(self.existsNomeUsuario(usuario)==None):
-=======
-		if(self.existsMatriculaUsuario(usuario)==None):
->>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
+	def insertUsuario(self, nome, usuario, senha, cpf, matricula, curso):
+		if(self.existsMatriculaUsuario(usuario) == None):
 			query = "INSERT INTO usuario(nome,usuario,senha,cpf,matricula,curso) VALUES (%s,%s,md5(%s),%s,%s,%s)"
-			args = (nome,usuario,senha,cpf,matricula,curso)
+			args = (nome, usuario, senha, cpf, matricula, curso)
 			conn = self.dbconfig()
 			cursor = conn.cursor()
 			try:
@@ -115,21 +112,16 @@ class Api:
 		else:
 			return False
 
-<<<<<<< HEAD
-	def existsNomeUsuario(self,usuario):
-		query = "select * from usuario where usuario=%s"
-=======
-	def existsMatriculaUsuario(self,usuario):
+	def existsMatriculaUsuario(self, usuario):
 		query = "select * from usuario where matricula=%s"
->>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
-			cursor.execute(query,(usuario,))
+			cursor.execute(query, (usuario,))
 			usuario = cursor.fetchone()
-			r=None
-			if(cursor.rowcount>0):
-				r=usuario
+			r = None
+			if(cursor.rowcount > 0):
+				r = usuario
 
 			return r
 		except Error as error:
@@ -139,16 +131,16 @@ class Api:
 		finally:
 			conn.close()
 
-	def existsUsuario(self,usuario,senha):
+	def existsUsuario(self, usuario, senha):
 		query = "select * from usuario where matricula=%s and senha=md5(%s)"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
-			cursor.execute(query,(usuario,senha))
+			cursor.execute(query, (usuario, senha))
 			usuario = cursor.fetchone()
-			r=None
-			if(cursor.rowcount>0):
-				r=usuario
+			r = None
+			if(cursor.rowcount > 0):
+				r = usuario
 
 			return r
 		except Error as error:
@@ -163,7 +155,8 @@ class Api:
 		SALAS
 
 	"""
-	def insertSalas(self,salas):
+
+	def insertSalas(self, salas):
 		query = "INSERT INTO salas(nome,bloco) VALUES(%s,%s)"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
@@ -198,12 +191,12 @@ class Api:
 			cursor.close()
 			conn.close()
 
-	def selectOneSala(self,id_sala):
+	def selectOneSala(self, id_sala):
 		query = "select * from salas where id=%s"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
-		try:	
-			cursor.execute(query,(id_sala,))
+		try:
+			cursor.execute(query, (id_sala,))
 			sala = cursor.fetchone()
 			conn.commit()
 
@@ -216,7 +209,7 @@ class Api:
 			cursor.close()
 			conn.close()
 
-	def deleteSala(self,id):
+	def deleteSala(self, id):
 		query = "delete from salas where id=%s"
 		try:
 			conn = self.dbconfig()
@@ -240,16 +233,13 @@ class Api:
 
 
 	"""
-	def insertPedidoReserva(self,id_sala, id_usuario, data, horario):
-		if(self.existsReserva(id_sala,data,horario)==None):
-<<<<<<< HEAD
+
+	def insertPedidoReserva(self, id_sala, id_usuario, data, horario):
+		if(self.existsReserva(id_sala, data, horario) == None):
 			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
-=======
-			if(dt.strptime(data,"%d/%m/%Y")>=dt.today()):
->>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 				query = "INSERT INTO pedidos_reservas(id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s)"
 				args = (id_usuario, id_sala, data, horario)
-			
+
 				conn = self.dbconfig()
 				cursor = conn.cursor()
 				try:
@@ -263,24 +253,16 @@ class Api:
 				except Error as error:
 					print(error)
 					return False
-<<<<<<< HEAD
 
-=======
-			
->>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 				finally:
 					cursor.close()
 					conn.close()
 			else:
-<<<<<<< HEAD
-				print("Data anterior a atual")
-=======
->>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 				return False
 		else:
 			return False
 
-	def selectOnePedidoReserva(self,id_reserva):
+	def selectOnePedidoReserva(self, id_reserva):
 		query = "select * from pedidos_reservas where id=%s"
 		args = (id_reserva,)
 		conn = self.dbconfig()
@@ -298,7 +280,7 @@ class Api:
 			cursor.close()
 			conn.close()
 
-	def cancelarPedidoReserva(self,id_pedido_reserva,id_usuario):
+	def cancelarPedidoReserva(self, id_pedido_reserva, id_usuario):
 		res = self.selectOnePedidoReserva(id_pedido_reserva)
 
 		if(res != None):
@@ -309,7 +291,7 @@ class Api:
 				conn = self.dbconfig()
 				cursor = conn.cursor()
 				try:
-					cursor.execute(query, (ident,id_usuario))
+					cursor.execute(query, (ident, id_usuario))
 					conn.commit()
 					return True
 				except Error as error:
@@ -325,12 +307,12 @@ class Api:
 		else:
 			return False
 
-	def selectAllPedidoReserva(self,id_usuario):
+	def selectAllPedidoReserva(self, id_usuario):
 		query = "select * from pedidos_reservas where id_usuario=%s"
 		try:
 			conn = self.dbconfig()
 			cursor = conn.cursor()
-			cursor.execute(query,(id_usuario,))
+			cursor.execute(query, (id_usuario,))
 			reservas = cursor.fetchall()
 			conn.commit()
 
@@ -342,10 +324,10 @@ class Api:
 		finally:
 			cursor.close()
 			conn.close()
-	
-	def existsReserva(self,id_sala,data,horario):
+
+	def existsReserva(self, id_sala, data, horario):
 		query = "select * from reservas where id_sala=%s and data=%s and horario=%s"
-		args = (id_sala,data,horario)
+		args = (id_sala, data, horario)
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
@@ -365,7 +347,8 @@ class Api:
 		RESERVAS
 
 	"""
-	def selectOneReserva(self,id_reserva):
+
+	def selectOneReserva(self, id_reserva):
 		query = "select * from reservas where id=%s"
 		args = (id_reserva,)
 		try:
@@ -383,12 +366,12 @@ class Api:
 		finally:
 			cursor.close()
 			conn.close()
-			
-	def cancelarReserva(self,id_reserva):
+
+	def cancelarReserva(self, id_reserva):
 		reserva = selectOneReserva(id_reserva)
 
 		if(reserva != ()):
-			(ident,id_usuario ,id_sala, data, horario) = reserva
+			(ident, id_usuario, id_sala, data, horario) = reserva
 			if(dt.strptime(data, "%d/%m/%Y") >= dt.today().strftime("%d/%m/%Y")):
 				query = "DELETE FROM reservas WHERE id = %s"
 				try:
@@ -409,12 +392,12 @@ class Api:
 		else:
 			return False
 
-	def selectAllReservas(self,id_usuario):
+	def selectAllReservas(self, id_usuario):
 		query = "select reservas.id,reservas.data, reservas.horario,salas.* from reservas INNER JOIN salas where reservas.id_usuario=%s and reservas.id_sala=salas.id"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
-			cursor.execute(query,(id_usuario,))
+			cursor.execute(query, (id_usuario,))
 			reservas = cursor.fetchall()
 			conn.commit()
 
@@ -433,6 +416,8 @@ class Api:
 	METODO PRINCIPAL
 
 """
+
+
 def main():
 	# Api().createTables()
 
@@ -451,8 +436,6 @@ def main():
 	# print(Api().selectOneSala(16))
 
 	print(Api().selectAllSalas())
-
-	
 
 
 if __name__ == '__main__':
