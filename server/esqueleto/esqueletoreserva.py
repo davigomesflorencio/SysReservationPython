@@ -29,12 +29,6 @@ class EsqueletoReserva:
     def adicionar_pedido_reserva(self,args):
         reserva = self.desempacotaReserva(args)
         msgresponse = MessageResponse()
-<<<<<<< HEAD
-        if(ServiceReserva().AdicionarPedidoReserva(reserva)):
-            msgresponse.mensagem = "Pedido de reserva adicionado"
-        else:
-            msgresponse.mensagem = "Pedido de reserva não adicionado"
-=======
         req=ServiceReserva().AdicionarPedidoReserva(reserva)
         if(req==1):
              msgresponse.mensagem = "ID da sala não existe"
@@ -42,7 +36,6 @@ class EsqueletoReserva:
             msgresponse.mensagem = "Pedido de reserva adicionado"
         else:
             msgresponse.mensagem = "Pedido de reserva não adicionado, já existe uma reserva com essas informações"
->>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
         return self.empacota(msgresponse)
     
     def ver_pedido_reserva(self,args):

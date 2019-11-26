@@ -35,11 +35,7 @@ public class Cliente {
 
 		case 2:
 			if (proxy.isLogado() == false) {
-<<<<<<< HEAD
-				System.out.println("Digite seu nome de usuário: ");
-=======
 				System.out.println("Digite sua matricula: ");
->>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 				do {
 					try {
 						opt = stdin.readLine();
@@ -112,14 +108,29 @@ public class Cliente {
 						e.printStackTrace();
 					}
 				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-				String pedC = opt;
-
-				System.out.println(proxy.CancelarPedidoReserva(pedC));
+				String pedCR = opt;
+				System.out.println(proxy.VerPedidoReserva(pedCR));
 			} else {
 				System.out.println("Operação não existe: Por favor você deve-se logar");
 			}
 			break;
+
 		case 5:
+			if (proxy.isLogado()) {
+				proxy.ListarPedidosReservas();
+			} else {
+				System.out.println("Operação não existe: Por favor você deve-se logar");
+			}
+			break;
+		case 6:
+			if (proxy.isLogado()) {
+				proxy.ListarReservas();
+			} else {
+				System.out.println("Operação não existe: Por favor você deve-se logar");
+			}
+			break;
+
+		case 7:
 			if (proxy.isLogado()) {
 				System.out.println("Digite o id do pedido: ");
 				do {
@@ -129,36 +140,22 @@ public class Cliente {
 						e.printStackTrace();
 					}
 				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-				String pedCR = opt;
-				System.out.println(proxy.VerPedidoReserva(pedCR));
-			} else {
-				System.out.println("Operação não existe: Por favor você deve-se logar");
-			}
-			break;
+				String pedC = opt;
 
-		case 6:
-			if (proxy.isLogado()) {
-				proxy.ListarPedidosReservas();
+				System.out.println(proxy.CancelarPedidoReserva(pedC));
 			} else {
 				System.out.println("Operação não existe: Por favor você deve-se logar");
 			}
 			break;
-		case 7:
-			if (proxy.isLogado()) {
-				proxy.ListarReservas();
-			} else {
-				System.out.println("Operação não existe: Por favor você deve-se logar");
-			}
-			break;
-
 		case 8:
-
+			if (proxy.isLogado()) {
+				proxy.ListarHistorico();
+			} else {
+				System.out.println("Operação não existe: Por favor você deve-se logar");
+			}
 			break;
 
 		case 9:
-			break;
-
-		case 10:
 			if (proxy.isLogado()) {
 				System.out.println(proxy.Deslogar());
 			} else {
@@ -166,7 +163,7 @@ public class Cliente {
 			}
 			break;
 
-		case 11:
+		case 10:
 			if (proxy.isLogado() == false) {
 				System.out.println("Digite seu nome: ");
 				do {
@@ -233,7 +230,7 @@ public class Cliente {
 				System.out.println("Operação não existe: Por favor você deve-se logar");
 			}
 			break;
-		case 12:
+		case 11:
 			System.out.println("Bye");
 			System.exit(0);
 			break;
