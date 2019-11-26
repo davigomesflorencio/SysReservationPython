@@ -85,7 +85,7 @@ class Api:
 	"""
 
 	def insertUsuario(self,nome,usuario,senha,cpf,matricula,curso):
-		if(self.existsNomeUsuario(usuario)==None):
+		if(self.existsMatriculaUsuario(usuario)==None):
 			query = "INSERT INTO usuario(nome,usuario,senha,cpf,matricula,curso) VALUES (%s,%s,md5(%s),%s,%s,%s)"
 			args = (nome,usuario,senha,cpf,matricula,curso)
 			conn = self.dbconfig()
@@ -111,8 +111,8 @@ class Api:
 		else:
 			return False
 
-	def existsNomeUsuario(self,usuario):
-		query = "select * from usuario where usuario=%s"
+	def existsMatriculaUsuario(self,usuario):
+		query = "select * from usuario where matricula=%s"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
@@ -131,7 +131,7 @@ class Api:
 			conn.close()
 
 	def existsUsuario(self,usuario,senha):
-		query = "select * from usuario where usuario=%s and senha=md5(%s)"
+		query = "select * from usuario where matricula=%s and senha=md5(%s)"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
@@ -201,7 +201,7 @@ class Api:
 			return sala
 		except Error as error:
 			print(error)
-			return ()
+			return None
 
 		finally:
 			cursor.close()
@@ -233,26 +233,29 @@ class Api:
 	"""
 	def insertPedidoReserva(self,id_sala, id_usuario, data, horario):
 		if(self.existsReserva(id_sala,data,horario)==None):
-			query = "INSERT INTO pedidos_reservas(id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s)"
-			args = (id_usuario, id_sala, data, horario)
-		
-			conn = self.dbconfig()
-			cursor = conn.cursor()
-			try:
-				cursor.execute(query, args)
+			if(dt.strptime(data,"%d/%m/%Y")>=dt.today()):
+				query = "INSERT INTO pedidos_reservas(id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s)"
+				args = (id_usuario, id_sala, data, horario)
+			
+				conn = self.dbconfig()
+				cursor = conn.cursor()
+				try:
+					cursor.execute(query, args)
 
-				r = False
-				if cursor.lastrowid:
-					r = True
-				conn.commit()
-				return r
-			except Error as error:
-				print(error)
+					r = False
+					if cursor.lastrowid:
+						r = True
+					conn.commit()
+					return r
+				except Error as error:
+					print(error)
+					return False
+			
+				finally:
+					cursor.close()
+					conn.close()
+			else:
 				return False
-
-			finally:
-				cursor.close()
-				conn.close()
 		else:
 			return False
 

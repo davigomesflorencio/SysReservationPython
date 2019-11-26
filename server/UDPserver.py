@@ -59,7 +59,7 @@ def main():
             #if(cont<2):
             #    print(cont)
             #    continue
-            # imprimeInfoMensagem(mensagem)
+            imprimeInfoMensagem(mensagem)
             des = Despachante
             sendReply(mensagem, des.invoke(mensagem), cliente)
         else:

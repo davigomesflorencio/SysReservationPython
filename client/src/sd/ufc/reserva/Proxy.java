@@ -34,7 +34,7 @@ public class Proxy {
 
 	public void Menu() {
 		if (isLogado() == false) {
-			System.out.println("\nDigite o n# da operação que deseja executar: ");
+			System.out.println("\nDigite o nº da operação que deseja executar: ");
 			System.out.println("1. Listar Salas");
 			System.out.println("2. Logar");
 			System.out.println("\nAPLICAÇÃO");
@@ -71,7 +71,9 @@ public class Proxy {
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 		} catch (java.lang.NullPointerException e) {
-			System.out.println("Servidor n�o respondeu!");
+			System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 
 		if (listsala != null) {
@@ -111,7 +113,7 @@ public class Proxy {
 				listreserva = ListaReserva
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 			} catch (java.lang.NullPointerException e) {
-				System.out.println("Servidor n�o respondeu!");
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -158,7 +160,7 @@ public class Proxy {
 				listreserva = ListaReserva
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 			} catch (java.lang.NullPointerException e) {
-				System.out.println("Servidor n�o respondeu!");
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -166,13 +168,13 @@ public class Proxy {
 			if (listreserva.getReservasCount() != 0) {
 				int t = listreserva.getReservasCount();
 				for (int i = 0; i < t; i++) {
-					System.out.println("ID : " + listreserva.getReservas(i).getId() + " Sala : "
-							+ listreserva.getReservas(i).getIdSala() + " Horario: "
-							+ listreserva.getReservas(i).getHorario() + " Data: "
-							+ listreserva.getReservas(i).getData());
+					System.out.println("ID : " + listreserva.getReservas(i).getId() 
+							+ " ,Sala : " + listreserva.getReservas(i).getIdSala() 
+							+ " ,Horario: " + listreserva.getReservas(i).getHorario()
+							+ " ,Data: " + listreserva.getReservas(i).getData());
 				}
 			} else {
-				System.out.println("Lista de pedidos reservas vazia");
+				System.out.println("Lista de pedidos reservas\n vazia");
 			}
 		} else {
 			System.out.println("Operação não executada: Por favor você deve-se logar");
@@ -199,8 +201,9 @@ public class Proxy {
 			try {
 				msgResposta = MessageResponse
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+			} catch (java.lang.NullPointerException e) {
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -237,6 +240,8 @@ public class Proxy {
 			try {
 				msgcallback = MessageResponse
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+			} catch (java.lang.NullPointerException e) {
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -276,10 +281,8 @@ public class Proxy {
 				msgcallback = MessageResponse
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 			} catch (java.lang.NullPointerException e) {
-				System.out.println("Servidor N�o Respondeu!");
-
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 			} catch (IOException e) {
-
 				e.printStackTrace();
 			}
 
@@ -314,7 +317,7 @@ public class Proxy {
 				msgcallback = MessageResponse
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 			} catch (java.lang.NullPointerException e) {
-				System.out.println("Sem tempo de resposta do servidor!");
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -355,13 +358,16 @@ public class Proxy {
 		try {
 			ident = Identificacao.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 			id_usuario = ident.getId();
+			if (id_usuario != -1) {
+				return "Login realizado com sucesso";
+			}
+			return "Não foi possivel realizar o login: Usuario ou senha incorretos";
+		} catch (java.lang.NullPointerException e) {
+			System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (id_usuario != -1) {
-			return "Login realizado com sucesso";
-		}
-		return "Não foi possivel realizar o login: Usuario ou senha incorretos";
+		return "";
 	}
 
 	private byte[] EmpacotaLogin(String usuario, String senha) {
@@ -399,14 +405,14 @@ public class Proxy {
 					m = udpclient.getReplay();
 					resposta = desempacotaMensagem(m);
 				} catch (Exception e) {
-//			System.out.println(e.getMessage());
+					//System.out.println(e.getMessage());
 					if (e.getMessage().equals("SocketTimeoutException")) {
 						// retransmite
-//				System.out.println("Estouro : ");
+						//System.out.println("Estouro : ");
 						estouro = true;
 						udpclient.sendRequest(data);
 					}
-//			e.printStackTrace();
+					//e.printStackTrace();
 				}
 			}
 		}

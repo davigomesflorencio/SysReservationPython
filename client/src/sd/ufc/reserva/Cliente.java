@@ -35,7 +35,7 @@ public class Cliente {
 
 		case 2:
 			if (proxy.isLogado() == false) {
-				System.out.println("Digite seu nome de usuário: ");
+				System.out.println("Digite sua matricula: ");
 				do {
 					try {
 						opt = stdin.readLine();
