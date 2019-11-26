@@ -85,7 +85,11 @@ class Api:
 	"""
 
 	def insertUsuario(self,nome,usuario,senha,cpf,matricula,curso):
+<<<<<<< HEAD
 		if(self.existsNomeUsuario(usuario)==None):
+=======
+		if(self.existsMatriculaUsuario(usuario)==None):
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 			query = "INSERT INTO usuario(nome,usuario,senha,cpf,matricula,curso) VALUES (%s,%s,md5(%s),%s,%s,%s)"
 			args = (nome,usuario,senha,cpf,matricula,curso)
 			conn = self.dbconfig()
@@ -111,8 +115,13 @@ class Api:
 		else:
 			return False
 
+<<<<<<< HEAD
 	def existsNomeUsuario(self,usuario):
 		query = "select * from usuario where usuario=%s"
+=======
+	def existsMatriculaUsuario(self,usuario):
+		query = "select * from usuario where matricula=%s"
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
@@ -131,7 +140,7 @@ class Api:
 			conn.close()
 
 	def existsUsuario(self,usuario,senha):
-		query = "select * from usuario where usuario=%s and senha=md5(%s)"
+		query = "select * from usuario where matricula=%s and senha=md5(%s)"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
@@ -201,7 +210,7 @@ class Api:
 			return sala
 		except Error as error:
 			print(error)
-			return ()
+			return None
 
 		finally:
 			cursor.close()
@@ -233,7 +242,11 @@ class Api:
 	"""
 	def insertPedidoReserva(self,id_sala, id_usuario, data, horario):
 		if(self.existsReserva(id_sala,data,horario)==None):
+<<<<<<< HEAD
 			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
+=======
+			if(dt.strptime(data,"%d/%m/%Y")>=dt.today()):
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 				query = "INSERT INTO pedidos_reservas(id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s)"
 				args = (id_usuario, id_sala, data, horario)
 			
@@ -250,12 +263,19 @@ class Api:
 				except Error as error:
 					print(error)
 					return False
+<<<<<<< HEAD
 
+=======
+			
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 				finally:
 					cursor.close()
 					conn.close()
 			else:
+<<<<<<< HEAD
 				print("Data anterior a atual")
+=======
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 				return False
 		else:
 			return False
@@ -300,6 +320,7 @@ class Api:
 					cursor.close()
 					conn.close()
 			else:
+				print("asklaskla")
 				return False
 		else:
 			return False

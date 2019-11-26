@@ -35,7 +35,11 @@ class EsqueletoAuth:
         if(res):
             msgresponse.mensagem = "Cadastrado realizado com sucesso"
         else:
+<<<<<<< HEAD
             msgresponse.mensagem = "Não foi possivel realizar o cadastro: Utilize outro nome de usuário"
+=======
+            msgresponse.mensagem = "Não foi possivel realizar o cadastro: Matricula já utilizada"
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
         return self.empacota(msgresponse)
     
     """"

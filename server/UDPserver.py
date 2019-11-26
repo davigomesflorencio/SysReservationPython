@@ -59,7 +59,11 @@ def main():
             #if(cont<2):
             #    print(cont)
             #    continue
+<<<<<<< HEAD
             # imprimeInfoMensagem(mensagem)
+=======
+            imprimeInfoMensagem(mensagem)
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
             des = Despachante
             sendReply(mensagem, des.invoke(mensagem), cliente)
         else:

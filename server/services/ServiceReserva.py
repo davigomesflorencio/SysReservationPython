@@ -35,7 +35,14 @@ class ServiceReserva:
         id_usuario = reserva.id_usuario
         data = reserva.data
         horario = reserva.horario
-        return Api().insertPedidoReserva(id_sala,id_usuario,data,horario)
+        sala =Api().selectOneSala(id_sala)
+        print("sala - ",sala)
+        if(sala==None):
+            return 1
+        if(Api().insertPedidoReserva(id_sala,id_usuario,data,horario)):
+            return 2
+        else:
+            return 3
     
     def VerPedidoReserva(self,reserva):
         return Api().selectOnePedidoReserva(reserva.id)

@@ -34,7 +34,11 @@ public class Proxy {
 
 	public void Menu() {
 		if (isLogado() == false) {
+<<<<<<< HEAD
 			System.out.println("\nDigite o n# da operação que deseja executar: ");
+=======
+			System.out.println("\nDigite o nº da operação que deseja executar: ");
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 			System.out.println("1. Listar Salas");
 			System.out.println("2. Logar");
 			System.out.println("\nAPLICAÇÃO");
@@ -71,7 +75,13 @@ public class Proxy {
 		} catch (InvalidProtocolBufferException e) {
 			e.printStackTrace();
 		} catch (java.lang.NullPointerException e) {
+<<<<<<< HEAD
 			System.out.println("Servidor n�o respondeu!");
+=======
+			System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+		} catch (IOException e) {
+			e.printStackTrace();
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 		}
 
 		if (listsala != null) {
@@ -111,6 +121,7 @@ public class Proxy {
 				listreserva = ListaReserva
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 			} catch (java.lang.NullPointerException e) {
+<<<<<<< HEAD
 				System.out.println("Servidor n�o respondeu!");
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -126,6 +137,23 @@ public class Proxy {
 			} else {
 				System.out.println("Lista de reservas futuras vazia");
 			}
+=======
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			if (listreserva.getReservasCount() != 0) {
+				int t = listreserva.getReservasCount();
+				for (int i = 0; i < t; i++) {
+					System.out.println("Sala : " + listreserva.getReservas(i).getIdSala() + " Horario: "
+							+ listreserva.getReservas(i).getHorario() + " Data: "
+							+ listreserva.getReservas(i).getData());
+				}
+			} else {
+				System.out.println("Lista de reservas futuras vazia");
+			}
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 		} else {
 			System.out.println("Operação não executada: Por favor você deve-se logar");
 		}
@@ -158,7 +186,11 @@ public class Proxy {
 				listreserva = ListaReserva
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 			} catch (java.lang.NullPointerException e) {
+<<<<<<< HEAD
 				System.out.println("Servidor n�o respondeu!");
+=======
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -166,6 +198,7 @@ public class Proxy {
 			if (listreserva.getReservasCount() != 0) {
 				int t = listreserva.getReservasCount();
 				for (int i = 0; i < t; i++) {
+<<<<<<< HEAD
 					System.out.println("ID : " + listreserva.getReservas(i).getId() + " Sala : "
 							+ listreserva.getReservas(i).getIdSala() + " Horario: "
 							+ listreserva.getReservas(i).getHorario() + " Data: "
@@ -173,6 +206,15 @@ public class Proxy {
 				}
 			} else {
 				System.out.println("Lista de pedidos reservas vazia");
+=======
+					System.out.println("ID : " + listreserva.getReservas(i).getId() 
+							+ " ,Sala : " + listreserva.getReservas(i).getIdSala() 
+							+ " ,Horario: " + listreserva.getReservas(i).getHorario()
+							+ " ,Data: " + listreserva.getReservas(i).getData());
+				}
+			} else {
+				System.out.println("Lista de pedidos reservas\n vazia");
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 			}
 		} else {
 			System.out.println("Operação não executada: Por favor você deve-se logar");
@@ -199,8 +241,14 @@ public class Proxy {
 			try {
 				msgResposta = MessageResponse
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+<<<<<<< HEAD
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
+=======
+			} catch (java.lang.NullPointerException e) {
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+			} catch (IOException e) {
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 				e.printStackTrace();
 			}
 
@@ -237,6 +285,11 @@ public class Proxy {
 			try {
 				msgcallback = MessageResponse
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+<<<<<<< HEAD
+=======
+			} catch (java.lang.NullPointerException e) {
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -270,6 +323,7 @@ public class Proxy {
 			args = EmpacotaCancelReserva(id);
 
 			Mensagem aux = doOperation("ReferenceReserva", "Metodo_cancelar_pedido_reserva", args);
+<<<<<<< HEAD
 
 			MessageResponse msgcallback = null;
 			try {
@@ -280,6 +334,15 @@ public class Proxy {
 
 			} catch (IOException e) {
 
+=======
+
+			MessageResponse msgcallback = null;
+			try {
+				msgcallback = MessageResponse
+						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+			} catch (java.lang.NullPointerException e) {
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 
@@ -290,6 +353,44 @@ public class Proxy {
 			}
 		} else {
 			return "Operação não executada: Por favor você deve-se logar";
+		}
+	}
+
+	public String VerPedidoReserva(String id) {
+		if (isLogado()) {
+			Reserva res = Reserva.newBuilder().setId(Integer.parseInt(id)).setIdUsuario(id_usuario).setIdSala(0)
+					.setData("").setHorario("").build();
+
+			byte[] args = new byte[1024];
+			ByteArrayOutputStream mensagem_em_bytes = new ByteArrayOutputStream(1024);
+			try {
+				res.writeDelimitedTo(mensagem_em_bytes);
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			}
+			args = mensagem_em_bytes.toByteArray();
+
+			Mensagem aux = doOperation("ReferenceReserva", "Metodo_ver_pedido_reserva", args);
+
+			MessageResponse msgcallback = null;
+			try {
+				msgcallback = MessageResponse
+						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+			} catch (java.lang.NullPointerException e) {
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+			} catch (IOException e) {
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
+				e.printStackTrace();
+			}
+
+			if (msgcallback != null) {
+				return msgcallback.getMensagem();
+			} else {
+				return "";
+			}
+		} else {
+			return "Operação não executada: Por favor você deve-se logar";
+<<<<<<< HEAD
 		}
 	}
 
@@ -326,6 +427,8 @@ public class Proxy {
 			}
 		} else {
 			return "Operação não executada: Por favor você deve-se logar";
+=======
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 		}
 	}
 
@@ -355,13 +458,23 @@ public class Proxy {
 		try {
 			ident = Identificacao.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
 			id_usuario = ident.getId();
+			if (id_usuario != -1) {
+				return "Login realizado com sucesso";
+			}
+			return "Não foi possivel realizar o login: Usuario ou senha incorretos";
+		} catch (java.lang.NullPointerException e) {
+			System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+<<<<<<< HEAD
 		if (id_usuario != -1) {
 			return "Login realizado com sucesso";
 		}
 		return "Não foi possivel realizar o login: Usuario ou senha incorretos";
+=======
+		return "";
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 	}
 
 	private byte[] EmpacotaLogin(String usuario, String senha) {
@@ -399,6 +512,7 @@ public class Proxy {
 					m = udpclient.getReplay();
 					resposta = desempacotaMensagem(m);
 				} catch (Exception e) {
+<<<<<<< HEAD
 //			System.out.println(e.getMessage());
 					if (e.getMessage().equals("SocketTimeoutException")) {
 						// retransmite
@@ -407,6 +521,16 @@ public class Proxy {
 						udpclient.sendRequest(data);
 					}
 //			e.printStackTrace();
+=======
+					//System.out.println(e.getMessage());
+					if (e.getMessage().equals("SocketTimeoutException")) {
+						// retransmite
+						//System.out.println("Estouro : ");
+						estouro = true;
+						udpclient.sendRequest(data);
+					}
+					//e.printStackTrace();
+>>>>>>> 56b917ff15441702bec6d1a2d3887c43553edcae
 				}
 			}
 		}
