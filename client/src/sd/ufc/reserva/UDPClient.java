@@ -22,14 +22,14 @@ public class UDPClient {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 	}
 
 	public void sendRequest(byte[] requisicao) {
 		byte[] sendData = new byte[1024];
-		
+
 		InetAddress IPAddress = null;
-		
+
 		try {
 			IPAddress = InetAddress.getByName(serverIP);
 		} catch (UnknownHostException e1) {
@@ -41,34 +41,30 @@ public class UDPClient {
 
 		DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, IPAddress, port);
 
-		
-		
 		try {
 			socket.send(sendPacket);
 			socket.setSoTimeout(2000);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();				
+			e.printStackTrace();
 		}
-		
-			
-				
+
 	}
 
-	public byte[] getReplay() throws Exception{
-		
+	public byte[] getReplay() throws SocketTimeoutException {
+
 		byte[] receiveData = new byte[1024];
 		DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
-			try {
-				socket.receive(receivePacket);				
-			}catch(SocketTimeoutException e) {
-				throw new Exception("SocketTimeoutException");
-			}catch (IOException e) {
-				e.printStackTrace();
-			}						
-			
-			return receiveData;
-		
+		try {
+			socket.receive(receivePacket);
+		} catch (SocketTimeoutException e) {
+			throw new SocketTimeoutException();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+		return receiveData;
+
 	}
 
 	public void finaliza() {

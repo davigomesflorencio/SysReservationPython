@@ -31,7 +31,7 @@ public class Proxy {
 	public boolean isLogado() {
 		return id_usuario == -1 ? false : true;
 	}
-	
+
 	public void MenuAdmin() {
 		if (isLogado() == false) {
 			System.out.println("\nDigite o nº da operação que deseja executar: ");
@@ -68,11 +68,12 @@ public class Proxy {
 			System.out.println("11. Finalizar programa");
 		}
 	}
-	
-	// M�TODOS DO ADMINISTRADOR   --------------------------------------------------------------------------
+
+	// M�TODOS DO ADMINISTRADOR
+	// --------------------------------------------------------------------------
 	public String AceitarPedidoReserva(String id) {
 		if (isLogado()) {
-			byte[] args = new byte[1024];			
+			byte[] args = new byte[1024];
 			args = EmpacotaReserva(id);
 
 			Mensagem aux = doOperation("ReferenceReserva", "Metodo_aceita_pedido_reserva", args);
@@ -96,10 +97,10 @@ public class Proxy {
 			return "Operação não executada: Por favor você deve-se logar";
 		}
 	}
-	
+
 	public String RejeitarPedidoReserva(String id) {
 		if (isLogado()) {
-			byte[] args = new byte[1024];			
+			byte[] args = new byte[1024];
 			args = EmpacotaReserva(id);
 
 			Mensagem aux = doOperation("ReferenceReserva", "Metodo_rejeita_pedido_reserva", args);
@@ -123,11 +124,11 @@ public class Proxy {
 			return "Operação não executada: Por favor você deve-se logar";
 		}
 	}
-	
+
 	public void ListarTodosPedidosReservas() {
 		if (isLogado()) {
 
-			byte[] args = new byte[1024];			
+			byte[] args = new byte[1024];
 
 			args = EmpacotaArg();
 
@@ -147,10 +148,10 @@ public class Proxy {
 			if (listreserva.getReservasCount() != 0) {
 				int t = listreserva.getReservasCount();
 				for (int i = 0; i < t; i++) {
-					System.out.println("ID : " + listreserva.getReservas(i).getId() 
-							+ " Sala : " + listreserva.getReservas(i).getIdSala() 
-							+ " Horario: " + listreserva.getReservas(i).getHorario()
-							+ " Data: " + listreserva.getReservas(i).getData());
+					System.out.println("ID : " + listreserva.getReservas(i).getId() + " Sala : "
+							+ listreserva.getReservas(i).getIdSala() + " Horario: "
+							+ listreserva.getReservas(i).getHorario() + " Data: "
+							+ listreserva.getReservas(i).getData());
 				}
 			} else {
 				System.out.println("Lista de pedidos reservas\n vazia");
@@ -159,10 +160,11 @@ public class Proxy {
 			System.out.println("Operação não executada: Por favor você deve-se logar");
 		}
 	}
-	
-	//------------------------------------------------------------------------------------------------------------------
-	
-	//M�TODOS DO CLIENTE ------------------------------------------------------------------------------------------------
+
+	// ------------------------------------------------------------------------------------------------------------------
+
+	// M�TODOS DO CLIENTE
+	// ------------------------------------------------------------------------------------------------
 
 	public void ListarSalas() {
 
@@ -195,8 +197,8 @@ public class Proxy {
 	public void ListarReservas() {
 		if (isLogado()) {
 			byte[] args = new byte[1024];
-			args =empacotaId();
-			
+			args = empacotaId();
+
 			Mensagem aux = doOperation("ReferenceReserva", "Metodo_listar_reservas", args);
 			ListaReserva listreserva = null;
 
@@ -223,19 +225,19 @@ public class Proxy {
 			System.out.println("Operação não executada: Por favor você deve-se logar");
 		}
 	}
-	
+
 	public void ListarHistorico() {
 		if (isLogado()) {
 			byte[] args = new byte[1024];
 			args = empacotaId();
-			
+
 			Mensagem aux = doOperation("ReferenceReserva", "Metodo_listar_historico", args);
 			ListaReserva listreserva = null;
 
 			try {
 				listreserva = ListaReserva
 						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
-			} catch (java.lang.NullPointerException e) {
+			}catch (java.lang.NullPointerException e) {
 				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -249,18 +251,17 @@ public class Proxy {
 							+ listreserva.getReservas(i).getData());
 				}
 			} else {
-				System.out.println("Lista de reservas futuras vazia");
+				System.out.println("Lista do historico de reservas vazia");
 			}
 		} else {
 			System.out.println("Operação não executada: Por favor você deve-se logar");
 		}
 	}
-	
 
 	public void ListarPedidosReservas() {
 		if (isLogado()) {
 
-			byte[] args = new byte[1024];			
+			byte[] args = new byte[1024];
 
 			args = empacotaId();
 
@@ -280,10 +281,10 @@ public class Proxy {
 			if (listreserva.getReservasCount() != 0) {
 				int t = listreserva.getReservasCount();
 				for (int i = 0; i < t; i++) {
-					System.out.println("ID : " + listreserva.getReservas(i).getId() 
-							+ " Sala : " + listreserva.getReservas(i).getIdSala() 
-							+ " Horario: " + listreserva.getReservas(i).getHorario()
-							+ " Data: " + listreserva.getReservas(i).getData());
+					System.out.println("ID : " + listreserva.getReservas(i).getId() + " Sala : "
+							+ listreserva.getReservas(i).getIdSala() + " Horario: "
+							+ listreserva.getReservas(i).getHorario() + " Data: "
+							+ listreserva.getReservas(i).getData());
 				}
 			} else {
 				System.out.println("Lista de pedidos reservas\n vazia");
@@ -343,7 +344,7 @@ public class Proxy {
 	public String CancelarPedidoReserva(String id) {
 		if (isLogado()) {
 			byte[] args = new byte[1024];
-			
+
 			args = EmpacotaReserva(id);
 
 			Mensagem aux = doOperation("ReferenceReserva", "Metodo_cancelar_reserva", args);
@@ -370,7 +371,7 @@ public class Proxy {
 
 	public String VerPedidoReserva(String id) {
 		if (isLogado()) {
-			byte[] args = new byte[1024];			
+			byte[] args = new byte[1024];
 			args = EmpacotaReserva(id);
 
 			Mensagem aux = doOperation("ReferenceReserva", "Metodo_ver_pedido_reserva", args);
@@ -394,7 +395,7 @@ public class Proxy {
 			return "Operação não executada: Por favor você deve-se logar";
 		}
 	}
-	
+
 	public String Logar(String usuario, String senha) {
 
 		byte[] args = new byte[1024];
@@ -416,16 +417,16 @@ public class Proxy {
 		}
 		return "";
 	}
-	
+
 	public String Deslogar() {
 		id_usuario = -1;
 		return "Voce deslogou";
 	}
 
-	
-	//-------------------------------------------------------------------------------------------------------------------------------
-	
-	//M�TODOS DE EMPACOTAMENTO --------------------------------------------------------------------------------------------------------------
+	// -------------------------------------------------------------------------------------------------------------------------------
+
+	// M�TODOS DE EMPACOTAMENTO
+	// --------------------------------------------------------------------------------------------------------------
 
 	private byte[] EmpacotaPedReserva(String id_sala, String data, String horario) {
 		Reserva res = Reserva.newBuilder().setId(0).setIdUsuario(id_usuario).setIdSala(Integer.parseInt(id_sala))
@@ -444,7 +445,7 @@ public class Proxy {
 
 		return args;
 	}
-	
+
 	private byte[] EmpacotaLogin(String usuario, String senha) {
 		AuthUsuario auth = AuthUsuario.newBuilder().setUsuario(usuario).setSenha(senha).build();
 		byte[] args = new byte[1024];
@@ -457,14 +458,14 @@ public class Proxy {
 		args = mensagem_em_bytes.toByteArray();
 		return args;
 	}
-	
+
 	private byte[] EmpacotaArg() {
 		byte[] args = new byte[1024];
 		args = new String("").getBytes();
 
 		return args;
 	}
-	
+
 	private byte[] empacotaCadastro(String nome, String usuario, String senha, String cpf, String matricula,
 			String curso) {
 		CadastroUsuario cad = CadastroUsuario.newBuilder().setNome(nome).setUsuario(usuario).setSenha(senha).setCpf(cpf)
@@ -480,7 +481,7 @@ public class Proxy {
 
 		return cad_em_bytes.toByteArray();
 	}
-	
+
 	public byte[] empacotaId() {
 		byte[] args = new byte[1024];
 		args = EmpacotaArg();
@@ -495,10 +496,10 @@ public class Proxy {
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
-		
+
 		return mensagem_em_bytes.toByteArray();
 	}
-	
+
 	private byte[] EmpacotaReserva(String id) {
 		Reserva res = Reserva.newBuilder().setId(Integer.parseInt(id)).setIdUsuario(id_usuario).setIdSala(0).setData("")
 				.setHorario("").build();
@@ -514,7 +515,7 @@ public class Proxy {
 
 		return args;
 	}
-	
+
 	private byte[] empacotaMensagem(String objectRef, String method, byte[] args) {
 		Mensagem msg = Mensagem.newBuilder().setMessageType(0).setRequestId(id_request).setObjectReference(objectRef)
 				.setMethod(method).setArguments(ByteString.copyFrom(args)).build();
@@ -545,7 +546,7 @@ public class Proxy {
 	}
 
 	// ---------------------------------------------------------------------------------------------------------------------------------
-	
+
 	private Mensagem doOperation(String objectRef, String method, byte[] args) {
 
 		byte[] data = empacotaMensagem(objectRef, method, args);
@@ -562,15 +563,9 @@ public class Proxy {
 				try {
 					m = udpclient.getReplay();
 					resposta = desempacotaMensagem(m);
-				} catch (Exception e) {
-					//System.out.println(e.getMessage());
-					if (e.getMessage().equals("SocketTimeoutException")) {
-						// retransmite
-						//System.out.println("Estouro : ");
-						estouro = true;
-						udpclient.sendRequest(data);
-					}
-					//e.printStackTrace();
+				} catch (SocketTimeoutException e) {
+					estouro = true;
+					udpclient.sendRequest(data);
 				}
 			}
 		}

@@ -229,12 +229,12 @@ class Api:
 
 	"""
 
-		PEDIDOS RESERVAS
+		PEDIDOS RESERVAS DE UM USUARIO 
 
 
 	"""
 
-	def insertPedidoReserva(self, id_sala, id_usuario, data, horario):
+	def insertPedidoReservaUser(self, id_sala, id_usuario, data, horario):
 		if(self.existsReserva(id_sala, data, horario) == None):
 			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
 				query = "INSERT INTO pedidos_reservas(id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s)"
@@ -262,7 +262,7 @@ class Api:
 		else:
 			return False
 
-	def selectOnePedidoReserva(self, id_reserva):
+	def selectOnePedidoReservaUser(self, id_reserva):
 		query = "select * from pedidos_reservas where id=%s"
 		args = (id_reserva,)
 		conn = self.dbconfig()
@@ -280,34 +280,34 @@ class Api:
 			cursor.close()
 			conn.close()
 
-	def cancelarPedidoReserva(self, id_pedido_reserva, id_usuario):
-		res = self.selectOnePedidoReserva(id_pedido_reserva)
+	# def cancelarPedidoReserva(self, id_pedido_reserva, id_usuario):
+	# 	res = self.selectOnePedidoReserva(id_pedido_reserva)
 
-		if(res != None):
-			print(res)
-			ident, id_usuario, id_sala, data, horario = res
-			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
-				query = "DELETE FROM pedidos_reservas WHERE id = %s and id_usuario= %s"
-				conn = self.dbconfig()
-				cursor = conn.cursor()
-				try:
-					cursor.execute(query, (ident, id_usuario))
-					conn.commit()
-					return True
-				except Error as error:
-					print(error)
-					return False
+	# 	if(res != None):
+	# 		print(res)
+	# 		ident, id_usuario, id_sala, data, horario = res
+	# 		if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
+	# 			query = "DELETE FROM pedidos_reservas WHERE id = %s and id_usuario= %s"
+	# 			conn = self.dbconfig()
+	# 			cursor = conn.cursor()
+	# 			try:
+	# 				cursor.execute(query, (ident, id_usuario))
+	# 				conn.commit()
+	# 				return True
+	# 			except Error as error:
+	# 				print(error)
+	# 				return False
 
-				finally:
-					cursor.close()
-					conn.close()
-			else:
-				print("asklaskla")
-				return False
-		else:
-			return False
+	# 			finally:
+	# 				cursor.close()
+	# 				conn.close()
+	# 		else:
+	# 			print("asklaskla")
+	# 			return False
+	# 	else:
+	# 		return False
 
-	def selectAllPedidoReserva(self, id_usuario):
+	def selectAllPedidoReservaUser(self, id_usuario):
 		query = "select * from pedidos_reservas where id_usuario=%s"
 		try:
 			conn = self.dbconfig()
@@ -344,11 +344,11 @@ class Api:
 
 	"""
 
-		RESERVAS
+		RESERVAS DE USUARIO
 
 	"""
 
-	def selectOneReserva(self, id_reserva):
+	def selectOneReservaUser(self, id_reserva):
 		query = "select * from reservas where id=%s"
 		args = (id_reserva,)
 		try:
@@ -367,17 +367,16 @@ class Api:
 			cursor.close()
 			conn.close()
 
-	def cancelarReserva(self, id_reserva):
-		reserva = selectOneReserva(id_reserva)
-
-		if(reserva != ()):
+	def cancelarReservaUser(self, id_reserva, usuario):
+		reserva = self.selectOneReserva(id_reserva)
+		if(reserva != None):
 			(ident, id_usuario, id_sala, data, horario) = reserva
-			if(dt.strptime(data, "%d/%m/%Y") >= dt.today().strftime("%d/%m/%Y")):
-				query = "DELETE FROM reservas WHERE id = %s"
+			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
+				query = "DELETE FROM reservas WHERE id = %s and id_usuario=%s"
 				try:
 					conn = self.dbconfig()
 					cursor = conn.cursor()
-					cursor.execute(query, (id_reserva,))
+					cursor.execute(query, (id_reserva, usuario))
 					conn.commit()
 					return True
 				except Error as error:
@@ -392,7 +391,7 @@ class Api:
 		else:
 			return False
 
-	def selectAllReservas(self, id_usuario):
+	def selectAllReservasUser(self, id_usuario):
 		query = "select reservas.id,reservas.data, reservas.horario,salas.* from reservas INNER JOIN salas where reservas.id_usuario=%s and reservas.id_sala=salas.id"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
@@ -411,6 +410,102 @@ class Api:
 			conn.close()
 
 
+	"""
+
+		ADMIN
+
+	"""
+
+
+	def selectAllPedidoReservas(self):
+			query = "select pedidos_reservas.id,pedidos_reservas.data, pedidos_reservas.horario,salas.* from pedidos_reservas INNER JOIN salas where and reservas.id_sala=salas.id"
+			conn = self.dbconfig()
+			cursor = conn.cursor()
+			try:
+				cursor.execute(query, ())
+				reservas = cursor.fetchall()
+				conn.commit()
+
+				return reservas
+			except Error as error:
+				print(error)
+				return []
+
+			finally:
+				cursor.close()
+				conn.close()
+
+	def acceptPedidoReservas(self, id_pedido,id_sala, id_usuario, data, horario):
+		reserva = self.selectOnePedidoReserva(id_pedido)
+		if(reserva!=None):
+			self.cancelarReserva(id_pedido)
+			query = "INSERT INTO reservas(id,id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s,%s)"
+			args = (id_pedido,id_usuario, id_sala, data, horario)
+
+			conn = self.dbconfig()
+			cursor = conn.cursor()
+			try:
+				cursor.execute(query, args)
+				r = False
+				if cursor.lastrowid:
+					r = True
+				conn.commit()
+				if(r):
+					return 1
+				else:
+					return 2
+			except Error as error:
+				print(error)
+				return 2
+
+			finally:
+				cursor.close()
+				conn.close()
+		else:
+			return 3
+
+
+	def selectOnePedidoReserva(self, id_reserva):
+		query = "select * from pedidos_reservas where id=%s"
+		args = (id_reserva,)
+		conn = self.dbconfig()
+		cursor = conn.cursor()
+		try:
+			cursor.execute(query, args)
+			reserva = cursor.fetchone()
+			conn.commit()
+			return reserva
+		except Error as error:
+			print(error)
+			return None
+
+		finally:
+			cursor.close()
+			conn.close()
+
+	def cancelarPedidoReserva(self, id_reserva):
+		reserva = self.selectOnePedidoReserva(id_reserva)
+		if(reserva != None):
+			(ident, id_usuario, id_sala, data, horario) = reserva
+			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
+				query = "DELETE FROM pedidos_reservas WHERE id = %s"
+				try:
+					conn = self.dbconfig()
+					cursor = conn.cursor()
+					cursor.execute(query, (id_reserva,))
+					conn.commit()
+					return True
+				except Error as error:
+					print(error)
+					return False
+
+				finally:
+					cursor.close()
+					conn.close()
+			else:
+				return False
+		else:
+			return False
 """
 
 	METODO PRINCIPAL
@@ -435,8 +530,8 @@ def main():
 
 	# print(Api().selectOneSala(16))
 
-	print(Api().selectAllSalas())
-
+	# print(Api().selectAllSalas())
+	pass
 
 if __name__ == '__main__':
 		main()
