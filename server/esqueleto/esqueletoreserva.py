@@ -51,7 +51,7 @@ class EsqueletoReserva:
     
     def cancelar_reserva(self,args):
         reserva = self.desempacotaReserva(args)
-        req = ServiceReserva().CancelarReserva(reserva)
+        req = ServiceReserva().CancelarReservaUser(reserva)
         msgresponse = MessageResponse()
         if(req==True):
             msgresponse.mensagem = "Reserva cancelada: ID solicitado "+str(reserva.id)

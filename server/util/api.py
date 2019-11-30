@@ -338,9 +338,9 @@ class Api:
 		else:
 			return False
 
-	def selectOnePedidoReservaUser(self, id_reserva):
-		query = "select * from pedidos_reservas where id=%s"
-		args = (id_reserva,)
+	def selectOnePedidoReservaUser(self, id_reserva,id_usuario):
+		query = "select * from pedidos_reservas where id=%s and id_usuario=%s"
+		args = (id_reserva,id_usuario)
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
@@ -511,7 +511,7 @@ class Api:
 				cursor.close()
 				conn.close()
 
-	def acceptPedidoReservas(self, id_pedido,id_sala, id_usuario, data, horario):
+	def acceptPedidoReserva(self, id_pedido,id_sala, id_usuario, data, horario):
 		reserva = self.selectOnePedidoReserva(id_pedido)
 		if(reserva!=None):
 			self.cancelarReserva(id_pedido)

@@ -142,7 +142,7 @@ public class Cliente {
 				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
 				String pedC = opt;
 
-				System.out.println(proxy.CancelarPedidoReserva(pedC));
+				System.out.println(proxy.CancelarReservaFutura(pedC));
 			} else {
 				System.out.println("Operação não existe: Por favor você deve-se logar");
 			}

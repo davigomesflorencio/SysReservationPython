@@ -341,13 +341,12 @@ public class Proxy {
 		}
 	}
 
-	public String CancelarPedidoReserva(String id) {
+	public String VerPedidoReserva(String id) {
 		if (isLogado()) {
 			byte[] args = new byte[1024];
-
 			args = EmpacotaReserva(id);
 
-			Mensagem aux = doOperation("ReferenceReserva", "Metodo_cancelar_reserva", args);
+			Mensagem aux = doOperation("ReferenceReserva", "Metodo_ver_pedido_reserva", args);
 
 			MessageResponse msgcallback = null;
 			try {
@@ -368,13 +367,14 @@ public class Proxy {
 			return "Operação não executada: Por favor você deve-se logar";
 		}
 	}
-
-	public String VerPedidoReserva(String id) {
+	
+	public String CancelarReservaFutura(String id) {
 		if (isLogado()) {
 			byte[] args = new byte[1024];
+
 			args = EmpacotaReserva(id);
 
-			Mensagem aux = doOperation("ReferenceReserva", "Metodo_ver_pedido_reserva", args);
+			Mensagem aux = doOperation("ReferenceReserva", "Metodo_cancelar_reserva", args);
 
 			MessageResponse msgcallback = null;
 			try {

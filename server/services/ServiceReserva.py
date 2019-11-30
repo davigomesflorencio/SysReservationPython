@@ -52,9 +52,9 @@ class ServiceReserva:
             return 3
     
     def VerPedidoReserva(self,reserva):
-        return Api().selectOnePedidoReservaUser(reserva.id)
+        return Api().selectOnePedidoReservaUser(reserva.id,reserva.id_usuario)
     
-    def CancelarReserva(self,reserva):
+    def CancelarReservaUser(self,reserva):
         # print(reserva.id)
         return Api().cancelarReservaUser(reserva.id,reserva.id_usuario)
 
