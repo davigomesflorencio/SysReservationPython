@@ -441,6 +441,7 @@ class Api:
 			return False
 
 	def selectAllReservasUser(self, id_usuario):
+		print("usu -",id_usuario)
 		query = "select reservas.id,reservas.data, reservas.horario,salas.* from reservas INNER JOIN salas where reservas.id_usuario=%s and reservas.id_sala=salas.id"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
@@ -448,7 +449,7 @@ class Api:
 			cursor.execute(query, (id_usuario,))
 			reservas = cursor.fetchall()
 			conn.commit()
-
+			print(reservas)
 			return reservas
 		except Error as error:
 			print(error)
@@ -483,12 +484,15 @@ class Api:
 				cursor.close()
 				conn.close()
 
-	def acceptPedidoReserva(self, id_pedido,id_sala, id_usuario, data, horario):
+	def aceitarPedidoReserva(self, id_pedido):
 		reserva = self.selectOnePedidoReserva(id_pedido)
 		if(reserva!=None):
-			self.cancelarReserva(id_pedido)
+			
+			self.cancelarPedidoReserva(id_pedido)
+
 			query = "INSERT INTO reservas(id,id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s,%s)"
-			args = (id_pedido,id_usuario, id_sala, data, horario)
+			(ident,id_usuario, id_sala, data, horario) = reserva
+			args = (ident,id_usuario, id_sala, data, horario)
 
 			conn = self.dbconfig()
 			cursor = conn.cursor()
@@ -499,8 +503,10 @@ class Api:
 					r = True
 				conn.commit()
 				if(r):
+					# DEU CERTO
 					return 1
 				else:
+					# ERRO
 					return 2
 			except Error as error:
 				print(error)
@@ -510,6 +516,7 @@ class Api:
 				cursor.close()
 				conn.close()
 		else:
+			# NÃO EXISTE
 			return 3
 
 	def selectOnePedidoReserva(self, id_reserva):
@@ -553,6 +560,7 @@ class Api:
 				return False
 		else:
 			return False
+
 """
 
 	METODO PRINCIPAL

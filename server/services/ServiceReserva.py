@@ -9,13 +9,13 @@ class ServiceReserva:
 
     """
 
-        CLIENTE
+        USUARIO CLIENTE
 
     """
     def ListarReservas(self,id_usuario):
         reservas = ListaReserva()
         for x in Api().selectAllReservasUser(id_usuario):
-            (ident, id_sala, id_usuario, data, horario) = x
+            (ident,data, horario,id_sala,nome ,bloco) = x
             if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
                 r =reservas.reservas.add()
                 r.id = ident
@@ -28,7 +28,7 @@ class ServiceReserva:
     def ListarPedidoReservas(self,id_usuario):
         reservas = ListaReserva()
         for x in Api().selectAllPedidoReservaUser(id_usuario):
-            (ident, id_usuario, id_sala, data, horario) = x
+            (ident,data, horario,id_sala,nome ,bloco) = x
             r =reservas.reservas.add()
             r.id = ident
             r.id_sala = id_sala
@@ -55,13 +55,12 @@ class ServiceReserva:
         return Api().selectOnePedidoReservaUser(reserva.id,reserva.id_usuario)
     
     def CancelarReservaUser(self,reserva):
-        # print(reserva.id)
         return Api().cancelarReservaUser(reserva.id,reserva.id_usuario)
 
     def ListarHistorico(self,id_usuario):
         reservas = ListaReserva()
         for x in Api().selectAllReservasUser(id_usuario):
-            (ident, id_sala, id_usuario, data, horario) = x
+            (ident,data, horario,id_sala,nome ,bloco) = x
             if(dt.strptime(data, "%d/%m/%Y") < dt.today()):
                 r =reservas.reservas.add()
                 r.id = ident
@@ -73,17 +72,23 @@ class ServiceReserva:
 
     """
 
-        ADMIN
+        USUARIO ADMIN
 
     """
     def ListarPedidoReservasAdmin(self):
         reservas = ListaReserva()
         for x in Api().selectAllPedidoReservas():
             (ident,id_usuario, data , horario,id_sala,nome,bloco) = x
-            r =reservas.reservas.add()
+            r = reservas.reservas.add()
             r.id = ident
             r.id_sala = id_sala
             r.id_usuario = id_usuario
             r.data = data
             r.horario = horario
         return reservas
+
+    def AceitarPedidoReserva(self,reserva):
+        return Api().aceitarPedidoReserva(reserva.id)
+    
+    def CancelarPedidoReserva(self,reserva):
+        return Api().cancelarPedidoReserva(reserva.id)

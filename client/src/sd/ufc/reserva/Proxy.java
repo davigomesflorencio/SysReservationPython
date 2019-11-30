@@ -33,12 +33,13 @@ public class Proxy {
 	}
 
 	public void MenuAdmin() {
+		System.out.println("-------------------------------------------------------------------------");
 		if (isLogado() == false) {
 			System.out.println("\nMENU USUARIO ADMIN\nDigite o nº da operação que deseja executar: ");
 			System.out.println("1. Logar");
 			System.out.println("\nAPLICAÇÃO");
 			System.out.println("5. Cadastro no sistema");
-			System.out.println("6. Finalizar programa");
+			System.out.println("7. Finalizar programa");
 		} else {
 			System.out.println("\nDigite o n# da operação que deseja executar: ");
 			System.out.println("2. Listar pedidos pendentes de reservas");
@@ -48,9 +49,11 @@ public class Proxy {
 			System.out.println("6. Deslogar");
 			System.out.println("7. Finalizar programa");
 		}
+		System.out.println("-------------------------------------------------------------------------");
 	}
 
 	public void Menu() {
+		System.out.println("-------------------------------------------------------------------------");
 		if (isLogado() == false) {
 			System.out.println("\nMENU USUARIO\nDigite o nº da operação que deseja executar: ");
 			System.out.println("1. Listar Salas");
@@ -73,16 +76,21 @@ public class Proxy {
 			System.out.println("9. Deslogar");
 			System.out.println("11. Finalizar programa");
 		}
+		System.out.println("-------------------------------------------------------------------------");
 	}
-
-	// M�TODOS DO ADMINISTRADOR
-	// --------------------------------------------------------------------------
+	
+	/*
+	 * 
+	 * 		ADMIN
+	 * 
+	 */
+	
 	public String AceitarPedidoReserva(String id) {
 		if (isLogado()) {
 			byte[] args = new byte[1024];
 			args = EmpacotaReserva(id);
 
-			Mensagem aux = doOperation("ReferenceReserva", "Metodo_aceita_pedido_reserva", args);
+			Mensagem aux = doOperation("ReferenceReserva", "Metodo_aceitar_pedido_reserva", args);
 
 			MessageResponse msgcallback = null;
 			try {
@@ -104,12 +112,12 @@ public class Proxy {
 		}
 	}
 
-	public String RejeitarPedidoReserva(String id) {
+	public String CancelarPedidoReserva(String id) {
 		if (isLogado()) {
 			byte[] args = new byte[1024];
 			args = EmpacotaReserva(id);
 
-			Mensagem aux = doOperation("ReferenceReserva", "Metodo_rejeita_pedido_reserva", args);
+			Mensagem aux = doOperation("ReferenceReserva", "Metodo_cancela_pedido_reserva", args);
 
 			MessageResponse msgcallback = null;
 			try {
@@ -167,11 +175,11 @@ public class Proxy {
 		}
 	}
 
-	// ------------------------------------------------------------------------------------------------------------------
-
-	// M�TODOS DO CLIENTE
-	// ------------------------------------------------------------------------------------------------
-
+	/*
+	 * 
+	 * 	CLIENTE
+	 * 	
+	 */
 	public void ListarSalas() {
 
 		byte[] args = new byte[1024];
@@ -431,9 +439,10 @@ public class Proxy {
 			return "Operação invalida";
 		}
 	}
+	
 	/*
 	 * 
-	 * 	LOGIN
+	 * 		LOGIN
 	 * 
 	 */
 
@@ -486,11 +495,12 @@ public class Proxy {
 		return "Voce deslogou";
 	}
 
-	// -------------------------------------------------------------------------------------------------------------------------------
-
-	// M�TODOS DE EMPACOTAMENTO
-	// --------------------------------------------------------------------------------------------------------------
-
+	/*
+	 * 
+	 * 		EMPACOTAMENTO
+	 * 
+	 */
+	
 	private byte[] EmpacotaPedReserva(String id_sala, String data, String horario) {
 		Reserva res = Reserva.newBuilder().setId(0).setIdUsuario(id_usuario).setIdSala(Integer.parseInt(id_sala))
 				.setData(data).setHorario(horario).build();
@@ -538,7 +548,6 @@ public class Proxy {
 		try {
 			cad.writeDelimitedTo(cad_em_bytes);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -608,8 +617,11 @@ public class Proxy {
 		return msg;
 	}
 
-	// ---------------------------------------------------------------------------------------------------------------------------------
-
+	/*
+	 * 
+	 * 		DO_OPERATION
+	 * 
+	 */
 	private Mensagem doOperation(String objectRef, String method, byte[] args) {
 
 		byte[] data = empacotaMensagem(objectRef, method, args);

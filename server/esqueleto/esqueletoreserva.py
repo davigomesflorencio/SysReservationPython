@@ -12,7 +12,7 @@ class EsqueletoReserva:
 
     """
 
-        METODOS
+       USUARIO CLIENTE
 
     """
 
@@ -66,13 +66,36 @@ class EsqueletoReserva:
 
     """
 
-        ADMIN
+        USUARIO ADMIN
 
     """
 
     def listar_pedidos_reservas_admin(self):
         lista = ServiceReserva().ListarPedidoReservasAdmin()
         return self.empacota(lista)
+
+    def cancelar_pedido_reserva(self,args):
+        reserva = self.desempacotaReserva(args)
+        req = ServiceReserva().CancelarPedidoReserva(reserva)
+        msgresponse = MessageResponse()
+        if(req==True):
+            msgresponse.mensagem = "Pedido de Reserva cancelado: ID solicitado "+str(reserva.id)
+        else:
+            msgresponse.mensagem = "Desculpe não foi possivel cancelar o pedido de reserva com a identificação solicitado : ID do pedido de reserva "+str(reserva.id)
+        return self.empacota(msgresponse)
+    
+    def aceitar_pedido_reserva(self,args):
+        reserva = self.desempacotaReserva(args)
+        req = ServiceReserva().AceitarPedidoReserva(reserva)
+        msgresponse = MessageResponse()
+        if(req==1):
+            msgresponse.mensagem = "Pedido de reserva aceito : ID solicitado "+str(reserva.id)
+        elif(req==2):
+            msgresponse.mensagem = "Desculpe não foi possivel cancelar o pedido de reserva com a identificação solicitado : ID do pedido de reserva "+str(reserva.id)
+        elif(req==3):
+            msgresponse.mensagem = "Identificação solicitada não existe : ID do pedido de reserva "+str(reserva.id)
+            
+        return self.empacota(msgresponse)
         
     """
 
