@@ -38,9 +38,9 @@ public class Proxy {
 			System.out.println("1. Logar");
 		} else {
 			System.out.println("\nDigite o n# da operação que deseja executar: ");
-			System.out.println("2. Listar Pedidos de Reservas");
-			System.out.println("3. Aceitar Reserva");
-			System.out.println("4. Recusar Reserva");
+			System.out.println("2. Listar pedidos pendentes de reservas");
+			System.out.println("3. Aceitar pedido pendente de reserva");
+			System.out.println("4. Recusar pedido pendente de reserva");
 		}
 	}
 

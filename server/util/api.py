@@ -61,6 +61,11 @@ class Api:
                             + ",id_sala INT(11) NOT NULL"
                             + ",data VARCHAR(255) NOT NULL"
                             + ",horario VARCHAR(255) NOT NULL)")
+			
+			cursor.execute("CREATE TABLE admin"
+                            + "(id INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT"
+                            + ",usuario VARCHAR(255) NOT NULL"
+                       		+ ",senha VARCHAR(255) NOT NULL")
 
 			cursor.execute(
                             "ALTER TABLE pedidos_reservas ADD CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id)")
@@ -78,6 +83,13 @@ class Api:
 		finally:
 			cursor.close()
 			conn.close()
+
+	"""
+
+		ADMIN
+
+	"""
+
 
 	"""
 
@@ -368,7 +380,7 @@ class Api:
 			conn.close()
 
 	def cancelarReservaUser(self, id_reserva, usuario):
-		reserva = self.selectOneReserva(id_reserva)
+		reserva = self.selectOneReservaUser(id_reserva)
 		if(reserva != None):
 			(ident, id_usuario, id_sala, data, horario) = reserva
 			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
