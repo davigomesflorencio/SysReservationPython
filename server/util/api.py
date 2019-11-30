@@ -90,6 +90,70 @@ class Api:
 
 	"""
 
+	def insertAdmin(self,usuario, senha):
+		if(self.existsAdmin(usuario) == None):
+			query = "INSERT INTO admin(usuario,senha) VALUES (%s,md5(%s))"
+			args = (usuario, senha)
+			conn = self.dbconfig()
+			cursor = conn.cursor()
+			try:
+				cursor.execute(query, args)
+
+				r = False
+				if cursor.lastrowid:
+					r = True
+				else:
+					r = False
+
+				conn.commit()
+				return r
+			except Error as error:
+				print(error)
+				return False
+
+			finally:
+				cursor.close()
+				conn.close()
+		else:
+			return False
+
+	def existsAdmin(self, usuario):
+		query = "select * from admin where usuario=%s"
+		conn = self.dbconfig()
+		cursor = conn.cursor()
+		try:
+			cursor.execute(query, (usuario,))
+			usuario = cursor.fetchone()
+			r = None
+			if(cursor.rowcount > 0):
+				r = usuario
+
+			return r
+		except Error as error:
+			print(error)
+			return None
+
+		finally:
+			conn.close()
+
+	def existsAdmin(self, usuario, senha):
+		query = "select * from usuario where usuario=%s and senha=md5(%s)"
+		conn = self.dbconfig()
+		cursor = conn.cursor()
+		try:
+			cursor.execute(query, (usuario, senha))
+			usuario = cursor.fetchone()
+			r = None
+			if(cursor.rowcount > 0):
+				r = usuario
+
+			return r
+		except Error as error:
+			print(error)
+			return None
+
+		finally:
+			conn.close()
 
 	"""
 
