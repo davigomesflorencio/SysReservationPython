@@ -23,11 +23,19 @@ class Despachante:
                 return EsqueletoReserva().cancelar_reserva(Mensagem.arguments)
             if(Mensagem.method=="Metodo_listar_historico"):
                 return EsqueletoReserva().listar_historico(Mensagem.arguments)
+
+            
+            if(Mensagem.method=="Metodo_listar_todos_pedido_reservas"):
+                return EsqueletoReserva().listar_pedidos_reservas_admin()
         
         if(Mensagem.object_reference=="ReferenceAuth"):
             if(Mensagem.method=="Metodo_autenticar"):
                 return EsqueletoAuth().auth(Mensagem.arguments)                
             if(Mensagem.method=="Metodo_cadastro_usuario"):                
                 return EsqueletoAuth().cadastro_usuario(Mensagem.arguments)
+            if(Mensagem.method=="Metodo_autenticar_admin"):
+                return EsqueletoAuth().auth_admin(Mensagem.arguments)                
+            if(Mensagem.method=="Metodo_cadastro_admin"):                
+                return EsqueletoAuth().cadastro_admin(Mensagem.arguments)
 
         

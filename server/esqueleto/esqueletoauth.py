@@ -38,6 +38,26 @@ class EsqueletoAuth:
             msgresponse.mensagem = "Não foi possivel realizar o cadastro: Matricula já utilizada"
         return self.empacota(msgresponse)
     
+    def auth_admin(self,args):
+        auth_admin = self.desempacotaAuthUsuario(args)
+        res= ServiceAuth().AuthAdmin(auth_admin.usuario,auth_admin.senha)
+        identificacao =Identificacao()
+        if(res!=None):
+            (ident,usuario,senha) =res
+            identificacao.id = int(ident)
+        else:
+            identificacao.id = -1
+        return self.empacota(identificacao)
+
+    def cadastro_admin(self,args):
+        auth_admin = self.desempacotaAuthUsuario(args)
+        res= ServiceAuth().CreateAdmin(auth_admin.usuario,auth_admin.senha)
+        msgresponse = MessageResponse()
+        if(res):
+            msgresponse.mensagem = "Cadastrado realizado com sucesso"
+        else:
+            msgresponse.mensagem = "Não foi possivel realizar o cadastro: Nome de usuario já utilizado"
+        return self.empacota(msgresponse)
     """"
 
         SERIALIZAÇÂO E DESERIALIZAÇÃO DAS IDL'S

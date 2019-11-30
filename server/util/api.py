@@ -65,7 +65,7 @@ class Api:
 			cursor.execute("CREATE TABLE admin"
                             + "(id INT(11) NOT NULL PRIMARY KEY AUTO_INCREMENT"
                             + ",usuario VARCHAR(255) NOT NULL"
-                       		+ ",senha VARCHAR(255) NOT NULL")
+                       		+ ",senha VARCHAR(255) NOT NULL)")
 
 			cursor.execute(
                             "ALTER TABLE pedidos_reservas ADD CONSTRAINT fk_id_usuario FOREIGN KEY (id_usuario) REFERENCES usuario(id)")
@@ -86,12 +86,12 @@ class Api:
 
 	"""
 
-		ADMIN
+		USUARIO ADMIN
 
 	"""
 
 	def insertAdmin(self,usuario, senha):
-		if(self.existsAdmin(usuario) == None):
+		if(self.existsUserAdmin(usuario) == None):
 			query = "INSERT INTO admin(usuario,senha) VALUES (%s,md5(%s))"
 			args = (usuario, senha)
 			conn = self.dbconfig()
@@ -117,7 +117,7 @@ class Api:
 		else:
 			return False
 
-	def existsAdmin(self, usuario):
+	def existsUserAdmin(self, usuario):
 		query = "select * from admin where usuario=%s"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
@@ -137,15 +137,15 @@ class Api:
 			conn.close()
 
 	def existsAdmin(self, usuario, senha):
-		query = "select * from usuario where usuario=%s and senha=md5(%s)"
+		query = "select * from admin where usuario=%s and senha=md5(%s)"
 		conn = self.dbconfig()
 		cursor = conn.cursor()
 		try:
 			cursor.execute(query, (usuario, senha))
-			usuario = cursor.fetchone()
+			admin = cursor.fetchone()
 			r = None
 			if(cursor.rowcount > 0):
-				r = usuario
+				r = admin
 
 			return r
 		except Error as error:
@@ -356,33 +356,6 @@ class Api:
 			cursor.close()
 			conn.close()
 
-	# def cancelarPedidoReserva(self, id_pedido_reserva, id_usuario):
-	# 	res = self.selectOnePedidoReserva(id_pedido_reserva)
-
-	# 	if(res != None):
-	# 		print(res)
-	# 		ident, id_usuario, id_sala, data, horario = res
-	# 		if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
-	# 			query = "DELETE FROM pedidos_reservas WHERE id = %s and id_usuario= %s"
-	# 			conn = self.dbconfig()
-	# 			cursor = conn.cursor()
-	# 			try:
-	# 				cursor.execute(query, (ident, id_usuario))
-	# 				conn.commit()
-	# 				return True
-	# 			except Error as error:
-	# 				print(error)
-	# 				return False
-
-	# 			finally:
-	# 				cursor.close()
-	# 				conn.close()
-	# 		else:
-	# 			print("asklaskla")
-	# 			return False
-	# 	else:
-	# 		return False
-
 	def selectAllPedidoReservaUser(self, id_usuario):
 		query = "select * from pedidos_reservas where id_usuario=%s"
 		try:
@@ -420,7 +393,7 @@ class Api:
 
 	"""
 
-		RESERVAS DE USUARIO
+		RESERVAS DE UM USUARIO
 
 	"""
 
@@ -488,13 +461,12 @@ class Api:
 
 	"""
 
-		ADMIN
+		USUARIO	ADMIN
 
 	"""
 
-
 	def selectAllPedidoReservas(self):
-			query = "select pedidos_reservas.id,pedidos_reservas.data, pedidos_reservas.horario,salas.* from pedidos_reservas INNER JOIN salas where and reservas.id_sala=salas.id"
+			query = "select pedidos_reservas.id,pedidos_reservas.id_usuario,pedidos_reservas.data, pedidos_reservas.horario,salas.* from pedidos_reservas INNER JOIN salas where pedidos_reservas.id_sala=salas.id"
 			conn = self.dbconfig()
 			cursor = conn.cursor()
 			try:
@@ -539,7 +511,6 @@ class Api:
 				conn.close()
 		else:
 			return 3
-
 
 	def selectOnePedidoReserva(self, id_reserva):
 		query = "select * from pedidos_reservas where id=%s"

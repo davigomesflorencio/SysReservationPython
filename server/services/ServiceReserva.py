@@ -70,3 +70,20 @@ class ServiceReserva:
                 r.data = data
                 r.horario = horario
         return reservas
+
+    """
+
+        ADMIN
+
+    """
+    def ListarPedidoReservasAdmin(self):
+        reservas = ListaReserva()
+        for x in Api().selectAllPedidoReservas():
+            (ident,id_usuario, data , horario,id_sala,nome,bloco) = x
+            r =reservas.reservas.add()
+            r.id = ident
+            r.id_sala = id_sala
+            r.id_usuario = id_usuario
+            r.data = data
+            r.horario = horario
+        return reservas

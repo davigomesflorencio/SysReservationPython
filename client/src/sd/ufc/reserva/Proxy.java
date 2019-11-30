@@ -34,19 +34,25 @@ public class Proxy {
 
 	public void MenuAdmin() {
 		if (isLogado() == false) {
-			System.out.println("\nDigite o nº da operação que deseja executar: ");
+			System.out.println("\nMENU USUARIO ADMIN\nDigite o nº da operação que deseja executar: ");
 			System.out.println("1. Logar");
+			System.out.println("\nAPLICAÇÃO");
+			System.out.println("5. Cadastro no sistema");
+			System.out.println("6. Finalizar programa");
 		} else {
 			System.out.println("\nDigite o n# da operação que deseja executar: ");
 			System.out.println("2. Listar pedidos pendentes de reservas");
 			System.out.println("3. Aceitar pedido pendente de reserva");
 			System.out.println("4. Recusar pedido pendente de reserva");
+			System.out.println("\nAPLICAÇÃO");
+			System.out.println("6. Deslogar");
+			System.out.println("7. Finalizar programa");
 		}
 	}
 
 	public void Menu() {
 		if (isLogado() == false) {
-			System.out.println("\nDigite o nº da operação que deseja executar: ");
+			System.out.println("\nMENU USUARIO\nDigite o nº da operação que deseja executar: ");
 			System.out.println("1. Listar Salas");
 			System.out.println("2. Logar");
 			System.out.println("\nAPLICAÇÃO");
@@ -294,31 +300,6 @@ public class Proxy {
 		}
 	}
 
-	public String CadastrarUsuario(String nome, String usuario, String senha, String cpf, String matricula,
-			String curso) {// cad proto
-		if (!isLogado()) {
-			byte[] args = new byte[1024];
-			args = empacotaCadastro(nome, usuario, senha, cpf, matricula, curso);
-
-			Mensagem aux = doOperation("ReferenceAuth", "Metodo_cadastro_usuario", args);
-
-			MessageResponse msgResposta = null;
-
-			try {
-				msgResposta = MessageResponse
-						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
-			} catch (java.lang.NullPointerException e) {
-				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-
-			return msgResposta.getMensagem();// string
-		} else {
-			return "Operação invalida";
-		}
-	}
-
 	public String RealizarPedidoReserva(String id_sala, String data, String horario) {
 		if (isLogado()) {
 			byte[] args = new byte[1024];
@@ -396,12 +377,94 @@ public class Proxy {
 		}
 	}
 
+	/*
+	 * 
+	 * 		CADASTRO
+	 * 
+	 */
+	
+	public String CadastrarUsuario(String nome, String usuario, String senha, String cpf, String matricula,
+			String curso) {// cad proto
+		if (!isLogado()) {
+			byte[] args = new byte[1024];
+			args = empacotaCadastro(nome, usuario, senha, cpf, matricula, curso);
+
+			Mensagem aux = doOperation("ReferenceAuth", "Metodo_cadastro_usuario", args);
+
+			MessageResponse msgResposta = null;
+
+			try {
+				msgResposta = MessageResponse
+						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+			} catch (java.lang.NullPointerException e) {
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			return msgResposta.getMensagem();// string
+		} else {
+			return "Operação invalida";
+		}
+	}
+	
+	public String CadastrarAdmin(String usuario, String senha) {// cad proto
+		if (!isLogado()) {
+			byte[] args = new byte[1024];
+			args = EmpacotaLogin(usuario, senha);
+
+			Mensagem aux = doOperation("ReferenceAuth", "Metodo_cadastro_admin", args);
+
+			MessageResponse msgResposta = null;
+
+			try {
+				msgResposta = MessageResponse
+						.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+			} catch (java.lang.NullPointerException e) {
+				System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			return msgResposta.getMensagem();// string
+		} else {
+			return "Operação invalida";
+		}
+	}
+	/*
+	 * 
+	 * 	LOGIN
+	 * 
+	 */
+
 	public String Logar(String usuario, String senha) {
 
 		byte[] args = new byte[1024];
 		args = EmpacotaLogin(usuario, senha);
 
 		Mensagem aux = doOperation("ReferenceAuth", "Metodo_autenticar", args);
+		Identificacao ident = null;
+		try {
+			ident = Identificacao.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));
+			id_usuario = ident.getId();
+			if (id_usuario != -1) {
+				return "Login realizado com sucesso";
+			}
+			return "Não foi possivel realizar o login: Usuario ou senha incorretos";
+		} catch (java.lang.NullPointerException e) {
+			System.out.println("Servidor não respondeu!, Tente novamente mais tarde.");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return "";
+	}
+	
+	public String LogarAdmin(String usuario, String senha) {
+
+		byte[] args = new byte[1024];
+		args = EmpacotaLogin(usuario, senha);
+
+		Mensagem aux = doOperation("ReferenceAuth", "Metodo_autenticar_admin", args);
 		Identificacao ident = null;
 		try {
 			ident = Identificacao.parseDelimitedFrom(new ByteArrayInputStream(aux.getArguments().toByteArray()));

@@ -66,6 +66,16 @@ class EsqueletoReserva:
 
     """
 
+        ADMIN
+
+    """
+
+    def listar_pedidos_reservas_admin(self):
+        lista = ServiceReserva().ListarPedidoReservasAdmin()
+        return self.empacota(lista)
+        
+    """
+
         SERIALIZAÇÂO E DESERIALIZAÇÃO DAS IDL'S
 
     """
