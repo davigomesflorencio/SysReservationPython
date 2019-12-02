@@ -202,7 +202,7 @@ public class Proxy {
 			int t = listsala.getListCount();
 			for (int i = 0; i < t; i++) {
 				System.out
-						.println("ID: " + listsala.getList(i).getIdSala() + " Nome: " + listsala.getList(i).getNome());
+						.println("ID: " + listsala.getList(i).getIdSala() + " , Nome: " + listsala.getList(i).getNome());
 			}
 		}
 
@@ -228,7 +228,7 @@ public class Proxy {
 			if (listreserva.getReservasCount() != 0) {
 				int t = listreserva.getReservasCount();
 				for (int i = 0; i < t; i++) {
-					System.out.println("Sala : " + listreserva.getReservas(i).getIdSala() + " Horario: "
+					System.out.println("ID : " + listreserva.getReservas(i).getId() + " ,Sala : " + listreserva.getReservas(i).getIdSala() + " Horario: "
 							+ listreserva.getReservas(i).getHorario() + " Data: "
 							+ listreserva.getReservas(i).getData());
 				}

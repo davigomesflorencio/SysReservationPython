@@ -28,7 +28,7 @@ class ServiceReserva:
     def ListarPedidoReservas(self,id_usuario):
         reservas = ListaReserva()
         for x in Api().selectAllPedidoReservaUser(id_usuario):
-            (ident,data, horario,id_sala,nome ,bloco) = x
+            (ident,id_usuario,id_sala,data, horario) = x
             r =reservas.reservas.add()
             r.id = ident
             r.id_sala = id_sala

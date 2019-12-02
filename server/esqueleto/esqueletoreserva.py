@@ -78,6 +78,7 @@ class EsqueletoReserva:
         reserva = self.desempacotaReserva(args)
         req = ServiceReserva().CancelarPedidoReserva(reserva)
         msgresponse = MessageResponse()
+        print("req,",req)
         if(req==True):
             msgresponse.mensagem = "Pedido de Reserva cancelado: ID solicitado "+str(reserva.id)
         else:
@@ -88,10 +89,11 @@ class EsqueletoReserva:
         reserva = self.desempacotaReserva(args)
         req = ServiceReserva().AceitarPedidoReserva(reserva)
         msgresponse = MessageResponse()
-        if(req==1):
+        print(req)
+        if(req==2):
             msgresponse.mensagem = "Pedido de reserva aceito : ID solicitado "+str(reserva.id)
-        elif(req==2):
-            msgresponse.mensagem = "Desculpe não foi possivel cancelar o pedido de reserva com a identificação solicitado : ID do pedido de reserva "+str(reserva.id)
+        elif(req==1):
+            msgresponse.mensagem = "Desculpe não foi possivel aceitar o pedido de reserva com a identificação solicitado : ID do pedido de reserva "+str(reserva.id)
         elif(req==3):
             msgresponse.mensagem = "Identificação solicitada não existe : ID do pedido de reserva "+str(reserva.id)
             

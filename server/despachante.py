@@ -29,7 +29,7 @@ class Despachante:
                 return EsqueletoReserva().listar_pedidos_reservas_admin()
             if(Mensagem.method=="Metodo_aceitar_pedido_reserva"):
                 return EsqueletoReserva().aceitar_pedido_reserva(Mensagem.arguments)
-            if(Mensagem.method=="Metodo_cancelar_pedido_reserva"):
+            if(Mensagem.method=="Metodo_cancela_pedido_reserva"):
                 return EsqueletoReserva().cancelar_pedido_reserva(Mensagem.arguments)
         
         if(Mensagem.object_reference=="ReferenceAuth"):

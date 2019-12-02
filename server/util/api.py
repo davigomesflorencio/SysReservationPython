@@ -162,7 +162,7 @@ class Api:
 	"""
 
 	def insertUsuario(self, nome, usuario, senha, cpf, matricula, curso):
-		if(self.existsMatriculaUsuario(usuario) == None):
+		if(self.existsMatriculaUsuario(matricula) == None):
 			query = "INSERT INTO usuario(nome,usuario,senha,cpf,matricula,curso) VALUES (%s,%s,md5(%s),%s,%s,%s)"
 			args = (nome, usuario, senha, cpf, matricula, curso)
 			conn = self.dbconfig()
@@ -486,10 +486,11 @@ class Api:
 
 	def aceitarPedidoReserva(self, id_pedido):
 		reserva = self.selectOnePedidoReserva(id_pedido)
+		print("reserva id select",reserva)
 		if(reserva!=None):
 			
-			self.cancelarPedidoReserva(id_pedido)
-
+			cance = self.cancelarPedidoReserva(id_pedido)
+			print('cance ',cance)
 			query = "INSERT INTO reservas(id,id_usuario,id_sala,data,horario) VALUES (%s,%s,%s,%s,%s)"
 			(ident,id_usuario, id_sala, data, horario) = reserva
 			args = (ident,id_usuario, id_sala, data, horario)
@@ -503,10 +504,8 @@ class Api:
 					r = True
 				conn.commit()
 				if(r):
-					# DEU CERTO
 					return 1
 				else:
-					# ERRO
 					return 2
 			except Error as error:
 				print(error)
@@ -539,6 +538,7 @@ class Api:
 
 	def cancelarPedidoReserva(self, id_reserva):
 		reserva = self.selectOnePedidoReserva(id_reserva)
+		print("cc",reserva)
 		if(reserva != None):
 			(ident, id_usuario, id_sala, data, horario) = reserva
 			if(dt.strptime(data, "%d/%m/%Y") >= dt.today()):
