@@ -30,31 +30,26 @@ public class Admin {
 
 		switch (operacao) {
 		case 1:
-			if (proxy.isLogado() == false) {
-				System.out.println("Digite seu nome de usuario : ");
-				do {
-					try {
-						opt = stdin.readLine();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-				String usuarioLogin = opt;
+			System.out.println("Digite seu nome de usuario : ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String usuarioLogin = opt;
 
-				System.out.println("Digite sua senha: ");
-				do {
-					try {
-						opt = stdin.readLine();
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
-				} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-				String senhaLogin = opt;
-
-				System.out.println(proxy.LogarAdmin(usuarioLogin, senhaLogin));
-			} else {
-				System.out.println("Operação não existe");
-			}
+			System.out.println("Digite sua senha: ");
+			do {
+				try {
+					opt = stdin.readLine();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
+			String senhaLogin = opt;
+			System.out.println(proxy.LogarAdmin(usuarioLogin, senhaLogin));
 			break;
 		case 2:
 			proxy.ListarTodosPedidosReservas();
@@ -92,7 +87,7 @@ public class Admin {
 					e.printStackTrace();
 				}
 			} while (opt.equals("\n") || opt.equals("") || opt.isEmpty());
-			
+
 			String usuCad = opt;
 
 			System.out.println("Digite a senha que voce deseja: ");
@@ -109,11 +104,7 @@ public class Admin {
 
 			break;
 		case 6:
-			if (proxy.isLogado()) {
-				System.out.println(proxy.Deslogar());
-			} else {
-				System.out.println("Operação não existe: Por favor você deve-se logar");
-			}
+			System.out.println(proxy.Deslogar());
 			break;
 		case 7:
 			System.out.println("Bye");

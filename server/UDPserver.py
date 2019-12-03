@@ -12,9 +12,10 @@ UDPServerSocket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
 
 
 def getRequest():
-     aux, cliente = UDPServerSocket.recvfrom(bufferSize)
-     req = desempacotaMensagem(aux)
-     return req, cliente
+    aux, cliente = UDPServerSocket.recvfrom(bufferSize)
+    print("Nova conexão estabelecida com o cliente : ",cliente)
+    req = desempacotaMensagem(aux)
+    return req, cliente
 
 
 def sendReply(msg, args, adress):
@@ -49,21 +50,23 @@ def imprimeInfoMensagem(msg):
 def main():
     UDPServerSocket.bind((localIP, localPort))
     print("UDP server executando")
-    cont = -1
+    # cont = -1
     lastMessageID = None
+    lastCliente = ()
     while(True):
         mensagem, cliente = getRequest()
-        if(lastMessageID != mensagem.request_id):
+        if((lastMessageID != mensagem.request_id and lastCliente != cliente) or(lastMessageID != mensagem.request_id and lastCliente == cliente)):
             lastMessageID = mensagem.request_id
+            lastCliente = cliente
             #cont = cont + 1
             #if(cont<2):
             #    print(cont)
             #    continue
-            imprimeInfoMensagem(mensagem)
+            # imprimeInfoMensagem(mensagem)
             des = Despachante
             sendReply(mensagem, des.invoke(mensagem), cliente)
         else:
-            print("Mensagem duplicada : ID -> ", lastMessageID)
+            print("Mensagem duplicada : ID -> ",  mensagem.request_id ," ,Cliente -> ",cliente)
 
 
 if __name__ == '__main__':
